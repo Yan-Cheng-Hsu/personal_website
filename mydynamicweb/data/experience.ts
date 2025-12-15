@@ -21,7 +21,7 @@ export const experiences: Experience[] = [
     id: 'alibaba',
     company: 'Alibaba Cloud',
     companyUrl: 'https://www.alibabacloud.com/',
-    organization: 'AnalyticDB Org - AI Training Platform Resource Management',
+    organization: 'AnalyticDB Org, AI Training Platform',
     organizationUrl: 'https://www.alibabacloud.com/product/analyticdb-for-postgresql',
     position: 'Site Reliability Engineer II',
     startDate: 'Jul. 2025',
@@ -29,20 +29,13 @@ export const experiences: Experience[] = [
     location: 'Sunnyvale, CA',
     projects: [
       {
-        title: 'Project Nexus: Cross-Cluster AI Training Infrastructure for Unitree G1-D',
+        title: 'Cross-Cluster AI Training Infrastructure for Unitree G1-D',
         url: 'https://www.alibabacloud.com/',
         bullets: [
-          'Designed the Dual-Layer Virtual Kubelet architecture to centralize 10,000+ heterogeneous GPUs, achieving ~40% cost reduction and scaling training capacity by 25x.',
-          'Implemented Federated Identity Mesh for secure Cross-Cluster AuthN/AuthZ with 9-hour token rotation.',
-          'Automated VPC networking via Terraform and re-architected Ray\'s service discovery for low-latency communication.'
-        ]
-      },
-      {
-        title: 'AIOps Hybrid Runtime Observability & Self-Healing',
-        url: 'https://www.alibabacloud.com/',
-        bullets: [
-          'Architecting telemetry pipeline with SysOM agents to tunnel DCGM metrics from isolated GPU sandboxes to SLS/OSS sinks.',
-          'Developing custom Kubernetes Controller for autonomous self-healing workflows (cordon/drain) for unhealthy GPU nodes.'
+          'Designed Dual-Layer Virtual Kubelet architecture orchestrating 10,000+ heterogeneous GPUs; enabled Serverless-to-Reserved migration achieving 40% cost reduction and 25x training capacity for Unitree G1 humanoid robots.',
+          'Engineered Federated Identity Mesh enabling cross-cluster AuthN/AuthZ via external Secret injection; resolved split-brain identity challenges with Custom Controllers implementing automated 9-hour token rotation.',
+          'Automated VPC provisioning via Terraform (Security Groups, CLB ACLs) to bypass CoreDNS isolation; rearchitected Ray service discovery for low-latency cross-boundary communication.',
+          'Built Kubernetes Controller with telemetry pipeline (DCGM metrics, kernel traces); implemented reconciliation loop triggering automated cordon/drain for faulty GPU nodes.'
         ]
       }
     ],
@@ -52,7 +45,7 @@ export const experiences: Experience[] = [
     id: 'amazon-agi',
     company: 'Amazon.com LLC',
     companyUrl: 'https://www.amazon.com/',
-    organization: 'AGI Org - High Performance Computing',
+    organization: 'AGI Org, High Performance Computing',
     organizationUrl: 'https://www.amazon.com/b?node=21576558011',
     position: 'Software Development Engineer',
     startDate: 'Oct. 2023',
@@ -60,12 +53,12 @@ export const experiences: Experience[] = [
     location: 'Seattle, WA',
     projects: [
       {
-        title: 'Platform Leviathan: NVIDIA A100s/H100s Infrastructure for Amazon NOVA',
+        title: 'Platform Leviathan: NVIDIA A100/H100 Infrastructure for Amazon NOVA',
         url: 'https://www.amazon.com/b?node=21576558011',
         bullets: [
-          'Architected a scalable GPU tracking system handling 3,000+ scaling requests, projecting to save $9 million annually.',
-          'Designed "Bad GPU" identification workflow for 7,000+ GPUs, reducing troubleshooting time by 90% and saving ~100 engineer-hours per month.',
-          'Re-engineered DynamoDB access patterns improving API response times by 70% with 100% failure detection rate.'
+          'GPU Lifecycle & Blocklisting: Architected scalable tracking system handling 3,000+ concurrent scaling requests; designed parent-child DAG in Apache Airflow; eliminated circular termination loops, delivering $9M annualized savings.',
+          'Automated Reliability Orchestrator: Designed fault identification workflow for 7,000+ GPU fleet using divide-and-conquer with dynamic K8s node labeling; reduced troubleshooting by 90% (10h → 1h), saving 1,200 engineer-hours/year.',
+          'API & Monitoring: Built customer-facing API/CLI (Lambda, Smithy); optimized DynamoDB O(N) → O(log N), improving response by 70%; deployed CloudWatch monitoring achieving 100% failure detection.'
         ]
       }
     ],
