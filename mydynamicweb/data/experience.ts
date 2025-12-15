@@ -63,7 +63,7 @@ export const experiences: Experience[] = [
         title: 'Platform Leviathan: NVIDIA A100s/H100s Infrastructure for Amazon NOVA',
         url: 'https://www.amazon.com/b?node=21576558011',
         bullets: [
-          'Architected a scalable GPU tracking system handling 3,000+ scaling requests, projecting to save $1.5 million annually.',
+          'Architected a scalable GPU tracking system handling 3,000+ scaling requests, projecting to save $9 million annually.',
           'Designed "Bad GPU" identification workflow for 7,000+ GPUs, reducing troubleshooting time by 90% and saving ~100 engineer-hours per month.',
           'Re-engineered DynamoDB access patterns improving API response times by 70% with 100% failure detection rate.'
         ]
