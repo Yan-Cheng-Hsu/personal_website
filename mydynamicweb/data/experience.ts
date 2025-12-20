@@ -23,7 +23,7 @@ export const experiences: Experience[] = [
     companyUrl: 'https://www.alibabacloud.com/',
     organization: 'AnalyticDB Org, AI Training Platform',
     organizationUrl: 'https://www.alibabacloud.com/product/analyticdb-for-postgresql',
-    position: 'Site Reliability Engineer II',
+    position: 'Infrastructure Software Engineer II (Official: SRE II)',
     startDate: 'Jul. 2025',
     endDate: 'present',
     location: 'Sunnyvale, CA',
@@ -32,8 +32,8 @@ export const experiences: Experience[] = [
         title: 'Cross-Cluster AI Training Infrastructure for Unitree G1-D',
         url: 'https://www.alibabacloud.com/',
         bullets: [
-          'Designed Dual-Layer Virtual Kubelet architecture orchestrating 10,000+ heterogeneous GPUs; enabled Serverless-to-Reserved migration achieving 40% cost reduction and 25x training capacity for Unitree G1 humanoid robots.',
-          'Engineered Federated Identity Mesh enabling cross-cluster AuthN/AuthZ via external Secret injection; resolved split-brain identity challenges with Custom Controllers implementing automated 9-hour token rotation.',
+          'Designed Dual-Layer Virtual Kubelet architecture orchestrating massive-scale heterogeneous GPU fleet; enabled Serverless-to-Reserved migration achieving ~40% TCO reduction and 25x capacity scaling for Unitree G1 humanoid robots.',
+          'Engineered Federated Identity Mesh enabling cross-cluster AuthN/AuthZ via external Secret injection; resolved split-brain identity challenges with Custom Controllers implementing automated token rotation.',
           'Automated VPC provisioning via Terraform (Security Groups, CLB ACLs) to bypass CoreDNS isolation; rearchitected Ray service discovery for low-latency cross-boundary communication.',
           'Built Kubernetes Controller with telemetry pipeline (DCGM metrics, kernel traces); implemented reconciliation loop triggering automated cordon/drain for faulty GPU nodes.'
         ]
@@ -56,9 +56,9 @@ export const experiences: Experience[] = [
         title: 'Platform Leviathan: NVIDIA A100/H100 Infrastructure for Amazon NOVA',
         url: 'https://www.amazon.com/b?node=21576558011',
         bullets: [
-          'GPU Lifecycle & Blocklisting: Architected scalable tracking system handling 3,000+ concurrent scaling requests; designed parent-child DAG in Apache Airflow; eliminated circular termination loops, delivering $9M annualized savings.',
-          'Automated Reliability Orchestrator: Designed fault identification workflow for 7,000+ GPU fleet using divide-and-conquer with dynamic K8s node labeling; reduced troubleshooting by 90% (10h → 1h), saving 1,200 engineer-hours/year.',
-          'API & Monitoring: Built customer-facing API/CLI (Lambda, Smithy); optimized DynamoDB O(N) → O(log N), improving response by 70%; deployed CloudWatch monitoring achieving 100% failure detection.'
+          'GPU Lifecycle & Blocklisting: Architected scalable tracking system handling thousands of concurrent scaling requests; designed parent-child DAG in Apache Airflow; eliminated circular termination loops, delivering multi-million dollar annualized savings.',
+          'Automated Reliability Orchestrator: Designed fault identification workflow for large-scale GPU clusters using divide-and-conquer with dynamic K8s node labeling; reduced troubleshooting time by ~90% per incident.',
+          'API & Monitoring: Built customer-facing API/CLI (Lambda, Smithy); optimized DynamoDB O(N) → O(log N), improving query response latency by over 70%.'
         ]
       }
     ],
@@ -102,7 +102,7 @@ export const experiences: Experience[] = [
         title: 'Alexa Secure AI Platform: Sensai Self-Service Onboarding Platform',
         bullets: [
           'Created and launched a decoupled web application on AWS Lambda and Cloudfront for secure onboarding.',
-          'Developed Auto-Verification, Canaries, Access Control, and Monitoring modules using AWS-CDK/SDK, reducing app/API integration time from 4 hours to 15 minutes - a 90% reduction.',
+          'Developed Auto-Verification, Canaries, Access Control, and Monitoring modules using AWS-CDK/SDK, drastically reducing app/API integration time.',
           'Refined the existing webUI to augment the self-service capabilities of the onboarding system.'
         ]
       }

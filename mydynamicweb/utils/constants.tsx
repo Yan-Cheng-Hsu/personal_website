@@ -3,7 +3,7 @@ import { TimelineItemModel } from "react-chrono/dist/models/TimelineItemModel";
 export const timelineData: TimelineItemModel[] = [
   {
     title: `Jul 2025`,
-    cardTitle: `Site Reliability Engineer II @Alibaba Cloud | AnalyticDB Org - AI Training Platform`,
+    cardTitle: `Infrastructure Software Engineer II @Alibaba Cloud | AnalyticDB Org - AI Training Platform`,
     cardSubtitle: `Project Nexus: Cross-Cluster AI Training Infrastructure for Unitree G1-D Robot`,
     cardDetailedText:`Tech Stack: Kubernetes, Virtual Kubelet, Terraform, Ray, DCGM, Prometheus, Grafana, eBPF, Golang`,
     url: `/work_exp`,

@@ -6,7 +6,7 @@ import HeroSection from '@/components/HeroSection'
 import ImpactSection from '@/components/ImpactSection'
 import ValueProposition from '@/components/ValueProposition'
 import SkillsMatrix from '@/components/SkillsMatrix'
-import LiveSystemStatus from '@/components/LiveSystemStatus'
+import ArchitectureGallery from '@/components/ArchitectureGallery'
 import Testimonials from '@/components/Testimonials'
 import ScheduleSection from '@/components/ScheduleSection'
 import Analytics from '@/components/Analytics'
@@ -20,7 +20,7 @@ export default function Index() {
         <title>Bill Hsu | SDE/SRE/MLE @ Alibaba Cloud | GPU Infrastructure Expert</title>
         <meta
           name="description"
-          content="Yan-Cheng (Bill) Hsu - Software/Site Reliability/ML Engineer specializing in AI Infrastructure. Architected Cross-Cluster systems for 10,000+ GPUs, saved $9M/year at Amazon. Ex-Amazon AGI, UCSD MS CS."
+          content="Yan-Cheng (Bill) Hsu - Infrastructure Software Engineer specializing in AI Platforms & Kubernetes. Architected Cross-Cluster systems for massive-scale GPU fleets, delivering multi-million dollar savings. Ex-Amazon AGI, UCSD MS CS."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="Yan-Cheng (Bill) Hsu" />
@@ -31,11 +31,11 @@ export default function Index() {
         <meta property="og:title" content="Bill Hsu | SDE/SRE/MLE & GPU Infrastructure Expert" />
         <meta
           property="og:description"
-          content="Building Cross-Cluster infrastructure that powers next-gen AI. Architected systems for 10,000+ GPUs, saved $9M/year."
+          content="Building Cross-Cluster infrastructure that powers next-gen AI. Architected systems for massive-scale GPU fleets with multi-million dollar impact."
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://profile.bill-hsu.com" />
-        <link rel="icon" href="/logo.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Analytics />
@@ -61,7 +61,7 @@ export default function Index() {
         <ImpactSection />
         <ValueProposition />
         <SkillsMatrix />
-        <LiveSystemStatus />
+        <ArchitectureGallery />
         <Testimonials />
         <ScheduleSection />
       </main>

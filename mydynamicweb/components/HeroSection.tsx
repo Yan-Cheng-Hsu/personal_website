@@ -5,11 +5,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 const roles = [
-  "Architected Cross-Cluster Infrastructure for 10,000+ GPUs 🚀",
-  "Saved $9M/year at Amazon AGI 💰",
-  "Reduced MTTR by 90% (10hr → 1hr) ⚡",
+  "Architected Cross-Cluster Infrastructure for Massive-Scale GPU Fleets 🚀",
+  "Delivered Multi-Million Dollar Savings at Amazon AGI 💰",
+  "Drastically Reduced MTTR with Self-Healing AIOps ⚡",
   "Designed Federated Identity Mesh for K8s 🔐",
-  "25x Scaling for Unitree G1 Robot Training 🤖"
+  "Order-of-Magnitude Scaling for AI Training 🤖"
 ]
 
 export default function HeroSection() {
@@ -73,7 +73,7 @@ export default function HeroSection() {
         </div>
 
         <p className={styles.heroSubtitle}>
-          Site Reliability Engineer II @ Alibaba Cloud | Ex-Amazon AGI
+          Infrastructure Software Engineer II @ Alibaba Cloud | Ex-Amazon AGI
           <br />
           Building the infrastructure that powers next-gen AI
         </p>

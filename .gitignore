@@ -1,0 +1,12 @@
+# Documentation artifacts
+docs/
+
+# Node modules in root
+node_modules/
+
+# OS files
+.DS_Store
+
+# IDE
+.idea/
+*.swp

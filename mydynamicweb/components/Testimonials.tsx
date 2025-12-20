@@ -1,31 +1,19 @@
 import { motion } from 'framer-motion'
-import { useState } from 'react'
 import styles from '@/styles/Landing.module.css'
 
-const testimonials = [
-  {
-    quote: "Bill's Dual-Layer Virtual Kubelet architecture revolutionized our cross-cluster GPU management. His solution enabled 25x scaling for Unitree G1 robot training while achieving 40% cost reduction.",
-    author: "Engineering Director",
-    company: "Alibaba Cloud",
-    role: "AnalyticDB AI Platform"
-  },
-  {
-    quote: "His GPU lifecycle and blacklisting system prevented circular terminations and saved us $9M annually. The automated reliability orchestrator reduced troubleshooting time by 90% - from 10 hours to just 1 hour.",
-    author: "Senior Principal Engineer",
-    company: "Amazon AGI",
-    role: "Platform Leviathan - NOVA Infrastructure"
-  },
-  {
-    quote: "Bill's innovative Federated Identity Mesh solved our 'split-brain' identity challenges in multi-cluster K8s. His ability to design secure, scalable systems at the 10,000+ GPU scale is unmatched.",
-    author: "Technical Lead",
-    company: "Cross-Industry Review",
-    role: "Cloud Infrastructure Expert"
-  }
-]
+const testimonial = {
+  quotes: [
+    "Mr. Hsu possesses a rare combination of expertise in GPU cluster management, distributed systems, and Kubernetes orchestration that is essential for building the next generation of AI training platforms.",
+    "His most significant contribution has been the design and implementation of our Dual-Layer Virtual Kubelet architecture, a groundbreaking system that enables centralized orchestration of a massive-scale heterogeneous GPU fleet across multiple clusters—achieving ~40% TCO reduction while expanding training capacity by 25x."
+  ],
+  author: "Panfeng Zhou",
+  title: "Senior Staff Engineer",
+  company: "Alibaba Cloud",
+  credential: "20+ years in database & distributed systems • Led team that set TPC-C world record",
+  linkedIn: "https://www.linkedin.com/in/panfeng-zhou-a16a934/"
+}
 
 export default function Testimonials() {
-  const [activeIndex, setActiveIndex] = useState(0)
-
   return (
     <section className={styles.testimonialsSection}>
       <motion.h2
@@ -37,42 +25,37 @@ export default function Testimonials() {
         What People Say About My Work
       </motion.h2>
 
-      <div className={styles.disclaimer}>
-        💡 These are simulated testimonials based on actual impact metrics
-      </div>
-
       <div className={styles.testimonialsContainer}>
         <motion.div
-          key={activeIndex}
           className={styles.testimonialCard}
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -50 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
         >
           <div className={styles.quoteIcon}>"</div>
-          <p className={styles.testimonialQuote}>
-            {testimonials[activeIndex].quote}
-          </p>
+          <div className={styles.testimonialQuote}>
+            {testimonial.quotes.map((quote, index) => (
+              <p key={index} style={{ marginBottom: index < testimonial.quotes.length - 1 ? '1rem' : 0 }}>
+                {quote}
+              </p>
+            ))}
+          </div>
           <div className={styles.testimonialAuthor}>
-            <strong>{testimonials[activeIndex].author}</strong>
-            <span>{testimonials[activeIndex].role}</span>
-            <span className={styles.testimonialCompany}>
-              {testimonials[activeIndex].company}
+            <a
+              href={testimonial.linkedIn}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.authorLink}
+            >
+              <strong>{testimonial.author}</strong>
+            </a>
+            <span>{testimonial.title}, {testimonial.company}</span>
+            <span className={styles.testimonialCredential}>
+              {testimonial.credential}
             </span>
           </div>
         </motion.div>
-
-        <div className={styles.testimonialDots}>
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              className={`${styles.dot} ${index === activeIndex ? styles.activeDot : ''}`}
-              onClick={() => setActiveIndex(index)}
-              aria-label={`Go to testimonial ${index + 1}`}
-            />
-          ))}
-        </div>
       </div>
     </section>
   )

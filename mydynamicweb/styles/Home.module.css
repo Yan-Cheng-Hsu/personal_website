@@ -49,6 +49,21 @@
     color: #ff6b35;
 }
 
+.navLink {
+    color: var(--text-secondary);
+}
+
+.scheduleBtn {
+    background: rgba(255, 107, 53, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: #ff6b35 !important;
+}
+
+.scheduleBtn:hover {
+    background: rgba(255, 107, 53, 0.2);
+}
+
 /* Footer Styles */
 .footer {
     padding: 2rem;

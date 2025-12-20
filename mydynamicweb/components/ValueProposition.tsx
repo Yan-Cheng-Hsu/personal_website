@@ -6,12 +6,12 @@ const offerings = [
   {
     icon: '🏗️',
     title: 'Cross-Cluster Architecture Expert',
-    description: 'Designed Dual-Layer Virtual Kubelet for 10,000+ heterogeneous GPUs',
+    description: 'Designed Dual-Layer Virtual Kubelet for massive-scale heterogeneous GPU fleets',
     details: [
       'Unified Resource Orchestration across clusters',
       'Federated Identity Mesh with secure AuthN/AuthZ',
       'Hybrid Network Fabric for low-latency communication',
-      '25x scaling for Unitree G1 robot training'
+      '25x capacity scaling for Unitree G1 robot training'
     ]
   },
   {
@@ -19,10 +19,10 @@ const offerings = [
     title: 'Massive Cost Savings',
     description: 'Proven track record of multi-million dollar optimizations',
     details: [
-      '$9M annual savings at Amazon AGI',
+      'Multi-million dollar annual savings at Amazon AGI',
       '40% cost reduction at Alibaba Cloud',
       'Migration from Serverless to Reserved instances',
-      '3,000+ scaling requests handled efficiently'
+      'Thousands of scaling requests handled efficiently'
     ]
   },
   {
@@ -30,7 +30,7 @@ const offerings = [
     title: 'AIOps & Self-Healing Systems',
     description: 'Architecting autonomous infrastructure that fixes itself',
     details: [
-      '90% MTTR reduction (10hr → 1hr)',
+      '~90% troubleshooting time reduction per incident',
       'Custom Kubernetes Controllers for auto-remediation',
       'Closed-loop telemetry pipeline with SysOM',
       'Zero data loss in isolated GPU sandboxes'
@@ -42,9 +42,9 @@ const offerings = [
     description: 'Enterprise-grade security for AI/ML infrastructure',
     details: [
       'Novel credential injection via Service Accounts',
-      '9-hour token rotation for Cross-Cluster auth',
+      'Automated token rotation for Cross-Cluster auth',
       'Secure Enclave telemetry with DCGM metrics',
-      '100 engineer-hours saved monthly via automation'
+      'Significant engineer-hours saved monthly via automation'
     ]
   }
 ]

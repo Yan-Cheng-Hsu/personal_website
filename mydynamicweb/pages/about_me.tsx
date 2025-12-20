@@ -14,7 +14,7 @@ export default function AboutMe() {
   return (
     <Layout
       title="About Me"
-      description="About Yan-Cheng (Bill) Hsu - Site Reliability Engineer at Alibaba Cloud specializing in AI Training Platform and GPU Infrastructure. MS in CS from UC San Diego."
+      description="About Yan-Cheng (Bill) Hsu - Infrastructure Software Engineer at Alibaba Cloud specializing in AI Training Platform and GPU Infrastructure. MS in CS from UC San Diego."
     >
       <div className={styles.section}>
         <h1 className={styles.sectionTitle}>About Me</h1>
@@ -46,7 +46,7 @@ export default function AboutMe() {
             <h4>Message for Recruiters & Hiring Managers</h4>
 
             <p>
-              I am Yan-Cheng (Bill) Hsu, a Site Reliability Engineer II at Alibaba Cloud,
+              I am Yan-Cheng (Bill) Hsu, an Infrastructure Software Engineer II at Alibaba Cloud,
               specializing in AI Training Platform resource management. With a Master&apos;s
               degree from UC San Diego, I bring deep expertise in building and managing
               large-scale GPU infrastructure for AI/ML workloads.
@@ -55,15 +55,15 @@ export default function AboutMe() {
             <p>
               At Alibaba Cloud, I architect cross-cluster AI training infrastructure for
               cutting-edge robotics (Unitree G1-D), designing systems that centralize
-              10,000+ heterogeneous GPUs with 40% cost reduction. My work on Federated
+              massive-scale heterogeneous GPU fleets with ~40% TCO reduction and 25x capacity scaling. My work on Federated
               Identity Mesh and AIOps observability demonstrates my ability to solve
               complex distributed systems challenges.
             </p>
 
             <p>
               Previously at Amazon AGI Org, I built the GPU infrastructure powering Amazon
-              NOVA, architecting systems that saved $1.5M annually and reduced
-              troubleshooting time by 90% for a fleet of 7,000+ GPUs. I&apos;m a co-author
+              NOVA, architecting systems that delivered multi-million dollar annual savings and reduced
+              troubleshooting time by ~90% per incident. I&apos;m a co-author
               on the Amazon Nova technical report.
             </p>
 
