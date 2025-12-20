@@ -6,7 +6,18 @@
       "Bash(npm run build:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(ls:*)",
+      "Bash(cp:*)",
+      "Bash(md5:*)",
+      "Bash(git ls-files:*)",
+      "WebFetch(domain:bill-yc-hsu.com)",
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)",
+      "Bash(lsof:*)",
+      "Bash(cat:*)",
+      "Bash(curl:*)",
+      "Bash(xargs kill:*)"
     ],
     "deny": [],
     "ask": []
