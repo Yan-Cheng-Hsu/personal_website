@@ -3,141 +3,51 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import styles from '@/styles/Landing.module.css'
 
-// SVG Diagrams for each view
+// SVG Diagrams for each view (Simplified)
 function OverviewDiagram() {
   return (
-    <svg viewBox="0 0 700 480" style={{ width: '100%', height: 'auto' }}>
+    <svg viewBox="0 0 700 420" style={{ width: '100%', height: 'auto' }}>
       <defs>
-        <linearGradient id="gOrange" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#ff6b35" stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#f7c531" stopOpacity="0.05" />
-        </linearGradient>
         <linearGradient id="gBlue" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#4a9eff" stopOpacity="0.2" />
           <stop offset="100%" stopColor="#4a9eff" stopOpacity="0.05" />
-        </linearGradient>
-        <linearGradient id="gGreen" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#10b981" stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#10b981" stopOpacity="0.05" />
         </linearGradient>
         <linearGradient id="gPurple" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#9b59b6" stopOpacity="0.2" />
           <stop offset="100%" stopColor="#9b59b6" stopOpacity="0.05" />
         </linearGradient>
-        <marker id="arrOrange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#ff6b35" />
-        </marker>
-        <marker id="arrBlue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#4a9eff" />
-        </marker>
-        <marker id="arrPurple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#9b59b6" />
-        </marker>
-        <marker id="arrGreen" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#10b981" />
-        </marker>
+        <linearGradient id="gGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#10b981" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#10b981" stopOpacity="0.05" />
+        </linearGradient>
       </defs>
 
-      {/* Title */}
-      <text x="350" y="20" textAnchor="middle" fill="#888" fontSize="11" fontWeight="500">K8S ON K8S: RECURSIVE VIRTUALIZATION ARCHITECTURE</text>
+      <text x="350" y="25" textAnchor="middle" fill="#888" fontSize="12" fontWeight="500">RECURSIVE VIRTUALIZATION ARCHITECTURE</text>
 
-      {/* ========== L1: User/Tenant Clusters ========== */}
-      <text x="55" y="50" fill="#4a9eff" fontSize="9" fontWeight="600">L1</text>
-      <rect x="70" y="35" width="560" height="50" rx="8" fill="none" stroke="#4a9eff" strokeWidth="1" strokeDasharray="4" />
-      <text x="350" y="52" textAnchor="middle" fill="#4a9eff" fontSize="9" fontWeight="600">ACK FRONTEND (User Clusters)</text>
+      {/* L1: User-Facing Layer */}
+      <rect x="120" y="50" width="460" height="80" rx="12" fill="url(#gBlue)" stroke="#4a9eff" strokeWidth="2" />
+      <text x="350" y="85" textAnchor="middle" fill="#4a9eff" fontSize="14" fontWeight="700">User-Facing Layer</text>
+      <text x="350" y="110" textAnchor="middle" fill="#7aa2d4" fontSize="10">Managed K8s • User Workloads</text>
 
-      {/* Tenant boxes */}
-      {['Unitree G1', 'LLM Training', 'Multi-modal'].map((name, i) => (
-        <g key={i}>
-          <rect x={100 + i * 180} y={58} width={140} height={22} rx="4" fill="url(#gBlue)" stroke="#4a9eff" strokeWidth="1" />
-          <text x={170 + i * 180} y={73} textAnchor="middle" fill="#4a9eff" fontSize="8" fontWeight="500">{name}</text>
-        </g>
-      ))}
+      {/* L2: Control Plane */}
+      <rect x="80" y="160" width="540" height="100" rx="12" fill="url(#gPurple)" stroke="#9b59b6" strokeWidth="2" />
+      <text x="350" y="195" textAnchor="middle" fill="#9b59b6" fontSize="14" fontWeight="700">Control Plane</text>
+      <text x="350" y="220" textAnchor="middle" fill="#b8a9c9" fontSize="10">Orchestration • Scheduling • Identity Management</text>
+      <text x="350" y="245" textAnchor="middle" fill="#666" fontSize="9">Virtual Kubelet • Cross-Cluster Networking</text>
 
-      {/* VK Layer 1 Arrow */}
-      <line x1="350" y1="85" x2="350" y2="105" stroke="#4a9eff" strokeWidth="2" markerEnd="url(#arrBlue)" />
-      <text x="385" y="100" fill="#4a9eff" fontSize="7">VK Layer 1</text>
-
-      {/* ========== L2: CPU Cluster (The Brain) ========== */}
-      <text x="55" y="125" fill="#9b59b6" fontSize="9" fontWeight="600">L2</text>
-      <rect x="70" y="110" width="560" height="115" rx="10" fill="#1a1a1a" stroke="#9b59b6" strokeWidth="2" />
-      <text x="350" y="128" textAnchor="middle" fill="#9b59b6" fontSize="10" fontWeight="700">CPU CLUSTER - Control Plane (The Brain)</text>
-
-      {/* Master components row 1 */}
-      <rect x="90" y="138" width="100" height="35" rx="5" fill="url(#gPurple)" stroke="#9b59b6" strokeWidth="1" />
-      <text x="140" y="153" textAnchor="middle" fill="#9b59b6" fontSize="8" fontWeight="600">Master API</text>
-      <text x="140" y="165" textAnchor="middle" fill="#666" fontSize="7">Server</text>
-
-      <rect x="200" y="138" width="100" height="35" rx="5" fill="url(#gPurple)" stroke="#9b59b6" strokeWidth="1" />
-      <text x="250" y="153" textAnchor="middle" fill="#9b59b6" fontSize="8" fontWeight="600">Ray Head</text>
-      <text x="250" y="165" textAnchor="middle" fill="#666" fontSize="7">Job Controller</text>
-
-      {/* Internal CLB - Key component */}
-      <rect x="310" y="138" width="110" height="35" rx="5" fill="#2a1a2a" stroke="#ff6b35" strokeWidth="2" />
-      <text x="365" y="153" textAnchor="middle" fill="#ff6b35" fontSize="8" fontWeight="700">Internal CLB</text>
-      <text x="365" y="165" textAnchor="middle" fill="#f7c531" fontSize="7">VPC Endpoint</text>
-
-      <rect x="430" y="138" width="100" height="35" rx="5" fill="url(#gPurple)" stroke="#9b59b6" strokeWidth="1" />
-      <text x="480" y="153" textAnchor="middle" fill="#9b59b6" fontSize="8" fontWeight="600">Virtual Node</text>
-      <text x="480" y="165" textAnchor="middle" fill="#666" fontSize="7">GPU Pool Target</text>
-
-      <rect x="540" y="138" width="80" height="35" rx="5" fill="url(#gPurple)" stroke="#9b59b6" strokeWidth="1" />
-      <text x="580" y="153" textAnchor="middle" fill="#9b59b6" fontSize="8" fontWeight="600">Billing</text>
-      <text x="580" y="165" textAnchor="middle" fill="#666" fontSize="7">Quota</text>
-
-      {/* VK Layer 2 modules */}
-      <text x="350" y="188" textAnchor="middle" fill="#ff6b35" fontSize="8" fontWeight="600">VK LAYER 2 INJECTION MODULES</text>
-      {['Identity Mesh', 'Storage Orchestrator', 'TimeWindow Scheduler'].map((name, i) => (
-        <g key={i}>
-          <rect x={100 + i * 175} y={195} width={155} height={24} rx="4" fill="#2a2a2a" stroke="#ff6b35" strokeOpacity="0.6" />
-          <text x={177 + i * 175} y={211} textAnchor="middle" fill="#f7c531" fontSize="8" fontWeight="500">{name}</text>
-        </g>
-      ))}
-
-      {/* VK Layer 2 Arrows - one for each GPU cluster */}
-      <line x1="177" y1="219" x2="177" y2="260" stroke="#ff6b35" strokeWidth="1.5" markerEnd="url(#arrOrange)" />
-      <line x1="352" y1="219" x2="352" y2="260" stroke="#ff6b35" strokeWidth="1.5" markerEnd="url(#arrOrange)" />
-      <line x1="527" y1="219" x2="527" y2="260" stroke="#ff6b35" strokeWidth="1.5" markerEnd="url(#arrOrange)" />
-      <text x="560" y="245" fill="#ff6b35" fontSize="7">VK Layer 2</text>
-
-      {/* ========== L3: GPU Clusters (The Muscle) ========== */}
-      <text x="55" y="285" fill="#10b981" fontSize="9" fontWeight="600">L3</text>
-      <rect x="70" y="270" width="560" height="100" rx="10" fill="none" stroke="#10b981" strokeWidth="2" strokeDasharray="5" />
-      <text x="350" y="288" textAnchor="middle" fill="#10b981" fontSize="10" fontWeight="700">GPU CLUSTERS - Data Plane (The Muscle)</text>
-
-      {/* GPU Cluster boxes */}
-      {['GPU Pool A', 'GPU Pool B', 'GPU Pool C'].map((name, i) => (
-        <g key={i}>
-          <rect x={90 + i * 185} y={298} width={165} height={60} rx="6" fill="url(#gGreen)" stroke="#10b981" strokeWidth="1" />
-          <text x={172 + i * 185} y={318} textAnchor="middle" fill="#10b981" fontSize="9" fontWeight="600">{name}</text>
-          <text x={172 + i * 185} y={335} textAnchor="middle" fill="#888" fontSize="7">Ray Worker Pods</text>
-          <text x={172 + i * 185} y={350} textAnchor="middle" fill="#666" fontSize="6">Same VPC</text>
-        </g>
-      ))}
-
-      {/* Feedback arrows from EACH GPU cluster back to CLB */}
-      <path d="M 130 298 Q 100 250 365 173" fill="none" stroke="#ff6b35" strokeWidth="1" strokeDasharray="3" markerEnd="url(#arrOrange)" />
-      <path d="M 310 298 Q 310 250 365 173" fill="none" stroke="#ff6b35" strokeWidth="1" strokeDasharray="3" markerEnd="url(#arrOrange)" />
-      <path d="M 490 298 Q 520 250 365 173" fill="none" stroke="#ff6b35" strokeWidth="1" strokeDasharray="3" markerEnd="url(#arrOrange)" />
-      <text x="580" y="275" fill="#ff6b35" fontSize="6">↑ All traffic via CLB</text>
+      {/* L3: Data Plane */}
+      <rect x="120" y="290" width="460" height="80" rx="12" fill="url(#gGreen)" stroke="#10b981" strokeWidth="2" />
+      <text x="350" y="325" textAnchor="middle" fill="#10b981" fontSize="14" fontWeight="700">Data Plane</text>
+      <text x="350" y="350" textAnchor="middle" fill="#6ee7b7" fontSize="10">GPU Resource Pools • Training Jobs</text>
 
       {/* Stats bar */}
-      <rect x="120" y="385" width="460" height="55" rx="8" fill="#1a1a1a" stroke="#333" />
-      <text x="350" y="405" textAnchor="middle" fill="#888" fontSize="8">KEY ACHIEVEMENTS</text>
-
-      <text x="200" y="425" textAnchor="middle" fill="#ff6b35" fontSize="12" fontWeight="700">40%</text>
-      <text x="200" y="437" textAnchor="middle" fill="#666" fontSize="7">Cost Reduction</text>
-
-      <text x="350" y="425" textAnchor="middle" fill="#ff6b35" fontSize="12" fontWeight="700">25x</text>
-      <text x="350" y="437" textAnchor="middle" fill="#666" fontSize="7">Capacity Scale</text>
-
-      <text x="500" y="425" textAnchor="middle" fill="#ff6b35" fontSize="12" fontWeight="700">Zero</text>
-      <text x="500" y="437" textAnchor="middle" fill="#666" fontSize="7">Downtime Rotation</text>
+      <rect x="170" y="385" width="360" height="30" rx="8" fill="#1a1a1a" stroke="#333" />
+      <text x="350" y="405" textAnchor="middle" fill="#888" fontSize="9">Unified resource pool • Significant cost reduction • Zero-downtime operations</text>
     </svg>
   )
 }
 
-// Amazon AGI: LLM Training Platform Architecture
+// LLM Training Platform Architecture (Simplified)
 function AmazonDiagram() {
   return (
     <svg viewBox="0 0 700 420" style={{ width: '100%', height: 'auto' }}>
@@ -146,77 +56,42 @@ function AmazonDiagram() {
           <stop offset="0%" stopColor="#ff9900" stopOpacity="0.2" />
           <stop offset="100%" stopColor="#ff9900" stopOpacity="0.05" />
         </linearGradient>
-        <marker id="arrAmazon" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#ff9900" />
-        </marker>
-        <marker id="arrGreen2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#10b981" />
-        </marker>
+        <linearGradient id="gPurple2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#9b59b6" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#9b59b6" stopOpacity="0.05" />
+        </linearGradient>
+        <linearGradient id="gGreen3" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#10b981" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#10b981" stopOpacity="0.05" />
+        </linearGradient>
       </defs>
 
       <text x="350" y="25" textAnchor="middle" fill="#888" fontSize="12" fontWeight="500">LLM TRAINING PLATFORM ARCHITECTURE</text>
 
-      {/* Scientist / CLI */}
-      <rect x="50" y="50" width="120" height="70" rx="10" fill="#1a1a1a" stroke="#ff9900" strokeWidth="2" />
-      <text x="110" y="80" textAnchor="middle" fill="#ff9900" fontSize="11" fontWeight="700">Scientist</text>
-      <text x="110" y="100" textAnchor="middle" fill="#f7c531" fontSize="9">CLI Tool</text>
+      {/* User Interface Layer */}
+      <rect x="220" y="50" width="260" height="70" rx="12" fill="url(#gAmazon)" stroke="#ff9900" strokeWidth="2" />
+      <text x="350" y="80" textAnchor="middle" fill="#ff9900" fontSize="14" fontWeight="700">User Interface</text>
+      <text x="350" y="100" textAnchor="middle" fill="#f7c531" fontSize="10">CLI / API Clients</text>
 
-      {/* Arrow to API */}
-      <line x1="170" y1="85" x2="220" y2="85" stroke="#ff9900" strokeWidth="2" markerEnd="url(#arrAmazon)" />
+      {/* Platform Services Layer */}
+      <rect x="120" y="150" width="460" height="90" rx="12" fill="url(#gPurple2)" stroke="#9b59b6" strokeWidth="2" />
+      <text x="350" y="180" textAnchor="middle" fill="#9b59b6" fontSize="14" fontWeight="700">Platform Services</text>
+      <text x="350" y="205" textAnchor="middle" fill="#b8a9c9" fontSize="10">API Layer • Orchestration • Automation</text>
+      <text x="350" y="225" textAnchor="middle" fill="#666" fontSize="9">Health Checks • Fault Isolation • Remediation</text>
 
-      {/* API Layer */}
-      <rect x="230" y="40" width="160" height="90" rx="10" fill="#1a1a1a" stroke="#ff9900" strokeWidth="2" />
-      <text x="310" y="65" textAnchor="middle" fill="#ff9900" fontSize="10" fontWeight="700">RESTful APIs</text>
-      <rect x="250" y="75" width="120" height="22" rx="4" fill="#2a2a2a" stroke="#ff9900" strokeOpacity="0.5" />
-      <text x="310" y="91" textAnchor="middle" fill="#f7c531" fontSize="8">API Gateway</text>
-      <rect x="250" y="100" width="120" height="22" rx="4" fill="#2a2a2a" stroke="#ff9900" strokeOpacity="0.5" />
-      <text x="310" y="116" textAnchor="middle" fill="#f7c531" fontSize="8">AWS Lambda</text>
+      {/* Data Layer */}
+      <rect x="420" y="270" width="200" height="70" rx="12" fill="#1a1a2e" stroke="#4a9eff" strokeWidth="2" />
+      <text x="520" y="300" textAnchor="middle" fill="#4a9eff" fontSize="12" fontWeight="700">Data Layer</text>
+      <text x="520" y="320" textAnchor="middle" fill="#7aa2d4" fontSize="9">Persistent Storage</text>
 
-      {/* Arrow to Airflow */}
-      <line x1="310" y1="130" x2="310" y2="170" stroke="#ff9900" strokeWidth="2" markerEnd="url(#arrAmazon)" />
-
-      {/* Airflow DAGs */}
-      <rect x="200" y="180" width="220" height="100" rx="10" fill="url(#gAmazon)" stroke="#ff9900" strokeWidth="2" />
-      <text x="310" y="205" textAnchor="middle" fill="#ff9900" fontSize="11" fontWeight="700">Airflow DAGs</text>
-      <rect x="220" y="215" width="90" height="25" rx="4" fill="#2a2a2a" stroke="#10b981" />
-      <text x="265" y="232" textAnchor="middle" fill="#10b981" fontSize="8">Health Check</text>
-      <rect x="320" y="215" width="90" height="25" rx="4" fill="#2a2a2a" stroke="#4a9eff" />
-      <text x="365" y="232" textAnchor="middle" fill="#4a9eff" fontSize="8">Divergence Test</text>
-      <rect x="220" y="245" width="190" height="25" rx="4" fill="#2a2a2a" stroke="#f7c531" />
-      <text x="315" y="262" textAnchor="middle" fill="#f7c531" fontSize="8">Node Remediation</text>
-
-      {/* Arrow to EKS */}
-      <line x1="310" y1="280" x2="310" y2="320" stroke="#10b981" strokeWidth="2" markerEnd="url(#arrGreen2)" />
-
-      {/* EKS Clusters */}
-      <rect x="180" y="330" width="260" height="70" rx="10" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" strokeWidth="2" />
-      <text x="310" y="355" textAnchor="middle" fill="#10b981" fontSize="11" fontWeight="700">AWS EKS Clusters</text>
-      <text x="310" y="375" textAnchor="middle" fill="#888" fontSize="9">7,000+ GPUs | Training Jobs</text>
-      <text x="310" y="390" textAnchor="middle" fill="#10b981" fontSize="8">H100 / A100 Fleet</text>
-
-      {/* Persistent Layer - Right side */}
-      <rect x="480" y="50" width="170" height="180" rx="10" fill="#1a1a1a" stroke="#9b59b6" strokeWidth="2" />
-      <text x="565" y="75" textAnchor="middle" fill="#9b59b6" fontSize="10" fontWeight="700">Persistent Layer</text>
-
-      <rect x="500" y="90" width="130" height="35" rx="4" fill="#2a2a2a" stroke="#9b59b6" strokeOpacity="0.5" />
-      <text x="565" y="112" textAnchor="middle" fill="#888" fontSize="8">Job Table</text>
-
-      <rect x="500" y="135" width="130" height="35" rx="4" fill="#2a2a2a" stroke="#9b59b6" strokeOpacity="0.5" />
-      <text x="565" y="157" textAnchor="middle" fill="#888" fontSize="8">GPU Serial History</text>
-
-      <rect x="500" y="180" width="130" height="35" rx="4" fill="#2a2a2a" stroke="#9b59b6" strokeOpacity="0.5" />
-      <text x="565" y="202" textAnchor="middle" fill="#888" fontSize="8">Cluster Metadata</text>
-
-      {/* Arrows to DB */}
-      <line x1="390" y1="110" x2="480" y2="110" stroke="#9b59b6" strokeWidth="1" strokeDasharray="4" />
-      <line x1="420" y1="230" x2="480" y2="160" stroke="#9b59b6" strokeWidth="1" strokeDasharray="4" />
+      {/* Infrastructure Layer */}
+      <rect x="80" y="270" width="300" height="70" rx="12" fill="url(#gGreen3)" stroke="#10b981" strokeWidth="2" />
+      <text x="230" y="300" textAnchor="middle" fill="#10b981" fontSize="12" fontWeight="700">Infrastructure</text>
+      <text x="230" y="320" textAnchor="middle" fill="#6ee7b7" fontSize="9">GPU Clusters • Training Jobs</text>
 
       {/* Stats bar */}
-      <rect x="480" y="260" width="170" height="90" rx="8" fill="#1a1a1a" stroke="#333" />
-      <text x="565" y="285" textAnchor="middle" fill="#ff9900" fontSize="10" fontWeight="600">Key Results</text>
-      <text x="565" y="308" textAnchor="middle" fill="#10b981" fontSize="9">96% faster fault isolation</text>
-      <text x="565" y="328" textAnchor="middle" fill="#f7c531" fontSize="9">$M+ annual savings</text>
-      <text x="565" y="343" textAnchor="middle" fill="#888" fontSize="8">Zero circular termination</text>
+      <rect x="170" y="365" width="360" height="45" rx="8" fill="#1a1a1a" stroke="#333" />
+      <text x="350" y="393" textAnchor="middle" fill="#888" fontSize="10">Automated fault detection • Significant cost savings • Self-healing infrastructure</text>
     </svg>
   )
 }
@@ -342,34 +217,34 @@ function WebDiagram() {
 const architectureViews = [
   {
     id: 'scale',
-    label: 'Scale (Alibaba)',
+    label: 'Scale (Cloud)',
     icon: '🌐',
     title: 'Federated AI Infrastructure',
     problem: 'Enterprise AI training demands massive GPU fleets, but Kubernetes wasn\'t designed for cross-cluster orchestration at this scale.',
-    description: 'Built a Ray AI SaaS platform on ACK (Alibaba Cloud Kubernetes) with dual-layer Virtual Kubelet architecture. This powers training for customers like Unitree G1 humanoid robots, unifying isolated GPU clusters into one logical pool.',
+    description: 'Built a Ray AI SaaS platform on Managed Kubernetes with dual-layer Virtual Kubelet architecture. This powers training for enterprise AI customers, unifying isolated GPU clusters into one logical pool.',
     diagram: OverviewDiagram,
     details: [
       'Virtual Kubelet presents isolated clusters as a single logical pool',
       'Federated Identity Mesh solves cross-cluster auth with automated token rotation',
-      'TimeWindow scheduling shifts workloads to off-peak hours → 40% cost savings'
+      'TimeWindow scheduling shifts workloads to off-peak hours → significant cost savings'
     ],
     techStack: ['Virtual Kubelet', 'Golang', 'gRPC', 'Kubernetes'],
     deepDiveLink: '/deep-dive#alibaba'
   },
   {
     id: 'efficiency',
-    label: 'Efficiency (Amazon)',
+    label: 'Efficiency (Platform)',
     icon: '⚡',
     title: 'LLM Training Platform',
-    problem: 'Managing 7,000+ GPUs across EKS clusters with hardware failures causing millions in idle costs and delayed science.',
-    description: 'Built internal tools for Amazon AGI\'s LLM training platform—Airflow DAGs for health checks, GPU serial tracking to block faulty hardware, and binary search-based fault isolation for training divergence issues.',
+    problem: 'Managing thousands of GPUs across Managed K8s clusters with hardware failures causing millions in idle costs and delayed science.',
+    description: 'Built internal tools for an LLM training platform—Airflow DAGs for health checks, GPU serial tracking to block faulty hardware, and binary search-based fault isolation for training divergence issues.',
     diagram: AmazonDiagram,
     details: [
       'Stateful GPU tracking prevents circular termination of faulty hardware',
       'Binary search algorithm isolates training divergence faults in minutes vs hours',
       'Multi-million dollar annual savings through automated fault detection'
     ],
-    techStack: ['Airflow', 'Kubernetes', 'AWS Lambda', 'DynamoDB'],
+    techStack: ['Airflow', 'Kubernetes', 'Serverless', 'NoSQL'],
     deepDiveLink: '/deep-dive#amazon'
   },
   {
@@ -404,7 +279,7 @@ export default function ArchitectureGallery() {
             Built for Massive-Scale GPU Infrastructure
           </h2>
           <p className={styles.archSubtitle}>
-            From Ray AI SaaS for Unitree robotics to self-healing GPU fleets at Amazon.
+            From Ray AI SaaS platforms to self-healing GPU fleets for LLM training.
             <br />
             Solving distributed system challenges at the petabyte scale.
           </p>
@@ -447,6 +322,11 @@ export default function ArchitectureGallery() {
                   <div className={styles.imageFrame}>
                     <DiagramComponent />
                   </div>
+                  {currentView.id !== 'product' && (
+                    <p className={styles.ndaDisclaimer}>
+                      <em>Architecture simplified for confidentiality. Patterns represent general industry practices.</em>
+                    </p>
+                  )}
                 </div>
 
                 {/* Narrative Side */}

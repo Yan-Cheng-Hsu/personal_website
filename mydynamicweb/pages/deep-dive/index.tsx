@@ -81,6 +81,7 @@ export default function DeepDiveIndex() {
                 className={styles.overviewText}
                 dangerouslySetInnerHTML={{
                   __html: section.systemArchitecture.overview
+                    .replace(/^> (.*$)/gm, '<blockquote class="' + styles.ndaNote + '">$1</blockquote>')
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                     .replace(/\n\n/g, '</p><p>')
                     .replace(/^- (.*$)/gm, '<li>$1</li>')

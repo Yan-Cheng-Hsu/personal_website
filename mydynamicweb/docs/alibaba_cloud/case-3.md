@@ -1,5 +1,9 @@
 # The Art of Deception: Cross-Cluster Kubernetes Storage Virtualization Based on Mock PV
 
+> **Note**: Due to confidentiality agreements, specific implementation details, internal service names, and proprietary protocols have been abstracted. The architectural patterns and engineering principles described here represent general industry practices.
+
+---
+
 ## Abstract
 
 In cross-cluster architectures, the physical separation of compute and storage prevents Kubernetes's native scheduler from completing PersistentVolumeClaim (PVC) binding, thus refusing to schedule. This article presents a **"Mock PV"** based two-phase provisioning mechanism that virtualizes storage resources in the Control Plane to pass scheduling checks, then lazy-binds real cloud disks in the Data Plane, achieving **100% native API compatibility** for cross-cluster storage scheduling while ensuring on-demand resource creation and automatic cleanup.
@@ -12,7 +16,7 @@ As business evolved toward **Multi-Cluster** and **Hybrid Cloud** architectures,
 
 ### 1.1 Business Scenario
 
-Users submit jobs to a unified **Control Cluster**, expecting to use high-performance cloud disks (like ESSD). However, actual Pods are delivered to remote **Execution Clusters** via **Virtual Kubelet (VK)**.
+Users submit jobs to a unified **Control Cluster**, expecting to use high-performance cloud disks. However, actual Pods are delivered to remote **Execution Clusters** via **Virtual Kubelet (VK)**.
 
 ### 1.2 Technical Conflict: Kubernetes Scheduler's Hard Constraint
 
@@ -54,33 +58,27 @@ We designed a storage virtualization solution based on **Mock PV + CSI Proxy**.
 
 ```mermaid
 graph TD
-    classDef control fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
-    classDef execution fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
-    classDef vk fill:#fff3e0,stroke:#e65100,stroke-width:2px;
-
-    subgraph "Phase 1: Control Plane (The Lie)"
-        User[User] -->|1. Submit Pod & PVC| API_Control[Control API Server]
-        Mock_Controller[Mock PV Controller] -->|2. Watch PVC| API_Control
-        Mock_Controller -->|3. Create Mock PV| API_Control
-        API_Control -->|4. PVC Bound - Scheduler Happy| VK_Provider[Virtual Kubelet]
+    subgraph Phase1["Phase 1: Control Plane"]
+        User[User] --> API[Control API]
+        Controller[Mock PV Controller] --> API
+        API --> VK[Virtual Kubelet]
     end
 
-    subgraph "Phase 2: Data Plane (The Truth)"
-        VK_Provider -->|5. Sync Pod & Spec| API_Exec[Execution API Server]
-        Storage_Mapper[Storage Mapper] -->|6. Map SC virtual to real| API_Exec
-        CSI_Driver[Real CSI Driver] -->|7. Provision Cloud Disk| Cloud_Provider[Cloud Provider]
-        Cloud_Provider -->|8. Attach Disk| Worker_Node[GPU Node]
+    subgraph Phase2["Phase 2: Data Plane"]
+        VK --> ExecAPI[Execution API]
+        Mapper[Storage Mapper] --> ExecAPI
+        CSI[Real CSI Driver] --> Cloud[Cloud Provider]
+        Cloud --> Node[GPU Node]
     end
 
-    subgraph "Feedback Loop"
-        Sync_Controller[Status Sync]
-        API_Exec -.->|9. Sync Real Status| Sync_Controller
-        Sync_Controller -.->|10. Update Mock PV| API_Control
+    subgraph Sync["Feedback Loop"]
+        ExecAPI -.-> SyncCtrl[Status Sync]
+        SyncCtrl -.-> API
     end
 
-    class User,API_Control,Mock_Controller control;
-    class API_Exec,CSI_Driver,Worker_Node,Cloud_Provider execution;
-    class VK_Provider,Storage_Mapper,Sync_Controller vk;
+    style Phase1 fill:#e3f2fd,stroke:#1565c0,color:#000
+    style Phase2 fill:#e8f5e9,stroke:#2e7d32,color:#000
+    style Sync fill:#fff3e0,stroke:#e65100,color:#000
 ```
 
 ### 3.2 Core Technique: The Art of Mock PV Construction
@@ -114,88 +112,53 @@ spec:
 We implemented a **StorageClass Mapper** responsible for protocol translation during cross-cluster transfer.
 
 * **Naming Convention**:
-  * User Cluster: `virtual-disk-essd-pl1` (virtual class)
-  * Execution Cluster: `alicloud-disk-essd` (real class, PerformanceLevel=PL1)
+  * User Cluster: `virtual-disk-*` (virtual class)
+  * Execution Cluster: Real cloud provider's StorageClass
 * **Auto-Translation**: VK Provider automatically identifies `virtual-*` prefix when syncing Pod Spec, parsing suffix to determine real cluster's StorageClass parameters, achieving **"Write Once, Run Anywhere"**.
 
 ### 3.4 State Consistency & Garbage Collection
 
 This is a distributed system, so state synchronization is crucial.
 
-#### Provisioning & Binding Sequence
-
-This sequence diagram shows how the system deceives the scheduler and completes real resource delivery remotely.
+#### Provisioning & Binding Flow
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    participant User
-    participant K8s_Control as Control Plane
-    participant Controller as Mock PV Controller
-    participant VK as Virtual Kubelet
-    participant K8s_Exec as Execution Cluster
-    participant CSI as Real CSI Driver
-
-    Note over User, K8s_Exec: Phase 1: The Deception (Control Plane)
-
-    User->>K8s_Control: Create PVC (StorageClass: virtual-disk)
-    K8s_Control->>Controller: Watch Event: PVC Pending
-
-    rect rgb(255, 240, 245)
-        Note right of Controller: Step A: Create Mock PV
-        Controller->>K8s_Control: Create PV (Driver: mock.csi...)
-        K8s_Control->>K8s_Control: Bind PVC to Mock PV
-        Note right of K8s_Control: PVC Status: BOUND
+graph LR
+    subgraph Deception["Phase 1: The Deception"]
+        A[Create PVC] --> B[Mock Controller]
+        B --> C[Create Mock PV]
+        C --> D[PVC Bound]
+        D --> E[Schedule Pod]
     end
 
-    User->>K8s_Control: Create Pod (uses PVC)
-    K8s_Control->>VK: Schedule Pod (Success!)
-
-    Note over User, K8s_Exec: Phase 2: The Realization (Data Plane)
-
-    VK->>K8s_Exec: Sync Pod Spec
-
-    rect rgb(240, 255, 240)
-        Note right of VK: Step B: JIT Provisioning
-        VK->>K8s_Exec: Create Real PVC (StorageClass: real-disk)
-        K8s_Exec->>CSI: ProvisionVolume()
-        CSI-->>K8s_Exec: Volume Created & Attached
+    subgraph Reality["Phase 2: The Reality"]
+        E --> F[Sync to Execution]
+        F --> G[Create Real PVC]
+        G --> H[CSI Provisions Disk]
     end
 
-    K8s_Exec-->>VK: Pod Running
-    VK-->>K8s_Control: Update Virtual Pod Status
+    style Deception fill:#fff3e0,stroke:#e65100,color:#000
+    style Reality fill:#e8f5e9,stroke:#2e7d32,color:#000
 ```
 
-#### Cascading Deletion Sequence
+*Detailed provisioning sequences are abstracted for confidentiality.*
 
-This diagram shows how we handle resource cleanup to prevent "orphan volumes" from causing billing leakage.
+#### Cascading Deletion Flow
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    participant User
-    participant K8s_Control as Control Plane
-    participant Controller as Mock PV Controller
-    participant VK as Virtual Kubelet
-    participant K8s_Exec as Execution Cluster
-
-    User->>K8s_Control: Delete PVC
-
-    rect rgb(255, 230, 230)
-        Note right of Controller: Finalizer Logic
-        K8s_Control->>Controller: Update Timestamp (DeletionTriggered)
-        Controller->>VK: Delete Pod (if exists)
-
-        Controller->>K8s_Exec: Find Real PVC
-        Controller->>K8s_Exec: Delete Real PVC
-        K8s_Exec->>K8s_Exec: CSI Detach & Delete Volume
-
-        Controller->>K8s_Control: Remove Finalizer
-        K8s_Control->>K8s_Control: Delete Mock PV object
+graph LR
+    subgraph Cleanup["Garbage Collection"]
+        A[Delete PVC] --> B[Finalizer Logic]
+        B --> C[Delete Remote PVC]
+        C --> D[CSI Detaches Disk]
+        D --> E[Remove Finalizer]
+        E --> F[Delete Mock PV]
     end
 
-    Note right of Controller: Clean up complete. No billing leakage.
+    style Cleanup fill:#ffebee,stroke:#c62828,color:#000
 ```
+
+*Detailed deletion sequences are abstracted for confidentiality.*
 
 ---
 
@@ -211,7 +174,7 @@ This system completely solved the cross-cluster storage scheduling challenge, br
 ### 4.2 Business Value
 
 * **Pay-as-you-go**: Eliminated idle storage costs. Cloud disk lifecycle strictly follows Pod - destroyed when Pod ends (or retained, depending on Policy).
-* **Multi-Cloud Adaptation**: This architecture is cloud-neutral. We can map to `gp3` on AWS, `essd` on Alibaba Cloud, achieving true hybrid cloud storage orchestration.
+* **Multi-Cloud Adaptation**: This architecture is cloud-neutral. We can map to different cloud providers' storage classes, achieving true hybrid cloud storage orchestration.
 
 ---
 

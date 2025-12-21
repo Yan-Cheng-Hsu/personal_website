@@ -7,7 +7,7 @@ const brands = [
   {
     name: 'Amazon AGI',
     logo: '/brands/amazon-official.png',
-    description: 'Saved $9M/year',
+    description: 'Multi-million savings',
     color: '#FF9900',
     isImage: true,
     url: 'https://www.amazon.com'

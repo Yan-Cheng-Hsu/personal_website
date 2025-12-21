@@ -1,8 +1,12 @@
-# Automating the Needle in a Haystack: Binary Search-Based AI Training Divergence Fault Isolation System
+# Automating the Needle in a Haystack: Binary Search-Based Training Fault Isolation System
+
+> **Note**: Due to confidentiality agreements, specific implementation details, internal service names, and proprietary protocols have been abstracted. The architectural patterns and engineering principles described here represent general industry practices.
+
+---
 
 ## Abstract
 
-In large-scale distributed training, Loss divergence (becoming NaN or 0) is an extremely difficult phenomenon to troubleshoot, often hard to distinguish between **infrastructure failures** (such as GPU soft errors, communication packet loss) or **user code issues** (such as gradient explosion). This article introduces the **Divergence Test DAG**, an automated diagnostic tool specifically designed for Training/Fine-tuning scenarios. By implementing an **Iterative Binary Search** algorithm on Kubernetes clusters, we successfully reduced fault node isolation time from hours to minutes, achieving clear responsibility boundary delineation between infrastructure and user models.
+In large-scale distributed training, training failures (Loss becoming NaN or 0) are extremely difficult to troubleshoot, often hard to distinguish between **infrastructure failures** (such as GPU soft errors, communication packet loss) or **user code issues** (such as gradient explosion). This article introduces an **automated fault isolation system**, a diagnostic tool specifically designed for Training/Fine-tuning scenarios. By implementing an **Iterative Binary Search** algorithm on Kubernetes clusters, we successfully reduced fault node isolation time from hours to minutes, achieving clear responsibility boundary delineation between infrastructure and user models.
 
 ---
 
@@ -20,7 +24,7 @@ When users report training task failures with Loss curves showing `NaN` or `0`, 
 ### 1.2 Technical Challenges: Unreproducible Ghost Failures
 
 * **Randomness**: Single-machine tests often cannot reproduce the issue—problems only appear during multi-machine distributed training (DDP).
-* **High Isolation Cost**: In a training job with 64 GPUs, finding one bad card is like finding a needle in a haystack. Manual A/B testing is time-consuming and error-prone.
+* **High Isolation Cost**: In a training job with many GPUs, finding one bad card is like finding a needle in a haystack. Manual A/B testing is time-consuming and error-prone.
 
 ---
 
@@ -32,17 +36,17 @@ As the platform architect, my goal was to develop an **automated fault isolation
 
 1. **Automated Binary Search**: Replace manual grouping tests with automatic **Divide-and-Conquer** strategy.
 2. **Production Environment Isolation**: During testing, use **Taint** mechanism to ensure nodes aren't preempted by other production tasks.
-3. **Resource Boundary Protection**: Must consider minimum node requirements (Minimum Required Nodes) to prevent OOM-induced false positives from too few nodes.
+3. **Resource Boundary Protection**: Must consider minimum node requirements to prevent OOM-induced false positives from too few nodes.
 
 ---
 
 ## 3. Action (Key Architecture & Technical Implementation)
 
-We designed a diagnostic workflow centered on the **Divergence Test DAG**, using Kubernetes Jobs to dynamically orchestrate test tasks.
+We designed a diagnostic workflow using Kubernetes Jobs to dynamically orchestrate test tasks.
 
 ### 3.1 Core Algorithm: Distributed Binary Search
 
-We applied traditional algorithmic thinking to operations scheduling. The system executes a maximum of **4 Rounds** of tests, each round splitting the suspected faulty node pool into two Batches, halving the Batch Size.
+We applied traditional algorithmic thinking to operations scheduling. The system executes multiple rounds of tests, each round splitting the suspected faulty node pool into batches, halving the Batch Size.
 
 #### State Machine Logic
 
@@ -53,39 +57,34 @@ We applied traditional algorithmic thinking to operations scheduling. The system
 
 ```mermaid
 graph TD
-    classDef init fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
-    classDef isolate fill:#fff3e0,stroke:#e65100,stroke-width:2px;
-    classDef test fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
-    classDef fail fill:#ffebee,stroke:#c62828,stroke-width:2px;
-
-    subgraph "Phase 1: Initialization"
-        Input[Input: JobID, RunID, MinNodes]:::init --> Fetch[Fetch Node List from Run Table]:::init
-        Fetch --> Taint[Taint Nodes<br/>divergence-test-InProgress]:::isolate
+    subgraph Init["Phase 1: Initialization"]
+        Input[Input: Job Info] --> Fetch[Fetch Node List]
+        Fetch --> Taint[Taint Nodes]
     end
 
-    subgraph "Phase 2: Isolation & Prep"
-        Taint --> Wait[Wait for Idle<br/>Drain Namespaced Jobs]:::isolate
-        Wait --> CheckMin{Nodes >= MinRequired?}:::init
-        CheckMin -->|No| Abort[Abort: Prevent OOM]:::fail
+    subgraph Prep["Phase 2: Preparation"]
+        Taint --> Wait[Wait for Idle]
+        Wait --> Check{Nodes >= Min?}
+        Check -->|No| Abort[Abort]
     end
 
-    subgraph "Phase 3: Iterative Binary Search"
-        CheckMin -->|Yes| Split{Need Split?}
-        Split -->|Yes| Batching[Create 2 Batches<br/>Assign JobID Labels]:::test
-        Split -->|No| SingleBatch[Run as Single Batch]:::test
-
-        Batching --> Submit[Submit K8s Jobs<br/>NodeSelector targeting Batches]:::test
-        Submit --> Monitor[Monitor Logs - 30mins]:::test
-
+    subgraph Search["Phase 3: Binary Search"]
+        Check -->|Yes| Split{Need Split?}
+        Split -->|Yes| Batch[Create Batches]
+        Split -->|No| Single[Single Batch]
+        Batch --> Submit[Submit K8s Jobs]
+        Submit --> Monitor[Monitor Logs]
         Monitor --> Result{Loss Status?}
-        Result -->|Normal| Release[Remove Taint<br/>Return to Pool]:::test
-        Result -->|NaN / 0| MarkBad[Mark Batch as Suspect]:::fail
-
-        MarkBad --> NextRound{Round < 4?}
-        NextRound -->|Yes| Recursion[Start Next Round<br/>with Suspect Batch]:::test
-        Recursion --> Split
-        NextRound -->|No| FinalFail[Mark Nodes FAILED]:::fail
+        Result -->|Normal| Release[Release Nodes]
+        Result -->|NaN| Mark[Mark Suspect]
+        Mark --> Next{More Rounds?}
+        Next -->|Yes| Split
+        Next -->|No| Fail[Mark Failed]
     end
+
+    style Init fill:#e3f2fd,stroke:#1565c0,color:#000
+    style Prep fill:#fff3e0,stroke:#e65100,color:#000
+    style Search fill:#e8f5e9,stroke:#2e7d32,color:#000
 ```
 
 ### 3.3 Key Technical Details
@@ -106,61 +105,47 @@ To precisely schedule Kubernetes Jobs to our split Batches, we don't rely on sta
 
 #### 3. Real-time Log Stream Analysis
 
-The system doesn't wait for task completion (which could take hours), but real-time `tails` training logs.
+The system doesn't wait for task completion (which could take hours), but real-time monitors training logs.
 
 * Once `loss: nan` or `loss: 0.0000` is captured, immediately terminate the Job and mark that Batch as failed. This achieves **Fail Fast**.
 
-### 3.4 Sequence Diagram: Binary Isolation Interaction
+### 3.4 Binary Isolation Flow
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    participant DAG as Divergence Controller
-    participant K8s as K8s API
-    participant NodeGroup as Nodes (Batch A+B)
-    participant Monitor as Log Parser
-
-    Note over DAG, NodeGroup: Round 1: Test All Nodes
-    DAG->>K8s: Taint All Nodes (NoSchedule)
-    DAG->>K8s: Submit Job-1 (Target: All)
-
-    par Execution
-        K8s->>NodeGroup: Run Training
-        NodeGroup->>Monitor: Stream Logs
+graph LR
+    subgraph Round1["Round 1: Test All"]
+        A1[Submit Job] --> B1[Monitor Logs]
+        B1 --> C1[Detect NaN]
+        C1 --> D1[Start Bisecting]
     end
 
-    Monitor-->>DAG: Alert: Loss = NaN found!
-    DAG->>K8s: Terminate Job-1
-    Note right of DAG: Fault Detected. Start Bisecting.
-
-    Note over DAG, NodeGroup: Round 2: Split into Batch A & B
-    DAG->>K8s: Label Node 1~N/2 -> Batch-A
-    DAG->>K8s: Label Node N/2+1~N -> Batch-B
-
-    DAG->>K8s: Submit Job-A (Target: Batch-A)
-    DAG->>K8s: Submit Job-B (Target: Batch-B)
-
-    par Execution
-        NodeGroup->>Monitor: Stream Logs (Job A)
-        NodeGroup->>Monitor: Stream Logs (Job B)
+    subgraph Round2["Round 2: Split A/B"]
+        D1 --> E2[Test Batch A]
+        D1 --> F2[Test Batch B]
+        E2 --> G2[A: Normal]
+        F2 --> H2[B: NaN Found]
+        G2 --> I2[Release A]
+        H2 --> J2[Bisect B]
     end
 
-    Monitor-->>DAG: Job-A Loss Normal
-    Monitor-->>DAG: Job-B Loss = NaN
+    subgraph RoundN["Round N: Isolate"]
+        J2 --> K[Continue Until Isolated]
+    end
 
-    DAG->>K8s: Untaint Batch-A (Healthy)
-    DAG->>K8s: Terminate Job-B (Fault Isolated)
-
-    Note over DAG, NodeGroup: Round 3: Bisect Batch-B...
+    style Round1 fill:#e3f2fd,stroke:#1565c0,color:#000
+    style Round2 fill:#fff3e0,stroke:#e65100,color:#000
+    style RoundN fill:#ffebee,stroke:#c62828,color:#000
 ```
+
+*Detailed isolation sequences are abstracted for confidentiality.*
 
 ---
 
 ## 4. Result (Outcomes & Impact)
 
-The Divergence Test DAG completed a missing piece of our observability puzzle.
+This fault isolation system completed a missing piece of our observability puzzle.
 
-1. **Reduced MTTR (Mean Time To Resolution)**: Reduced fault node isolation time from **manual hours** to **automated 30-60 minutes**.
+1. **Reduced MTTR (Mean Time To Resolution)**: Reduced fault node isolation time from **manual hours** to **automated minutes**.
 2. **Clear Responsibility Boundaries**:
    * If all group tests reproduce NaN, it proves **user code/data issue** (Algorithm Issue).
    * If only specific groups reproduce, it proves **hardware failure** (Infrastructure Issue).

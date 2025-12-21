@@ -920,6 +920,20 @@
   color: #ff6b35;
 }
 
+.ndaNote {
+  background: linear-gradient(135deg, rgba(155, 89, 182, 0.15), rgba(155, 89, 182, 0.05));
+  border-left: 4px solid #9b59b6;
+  padding: 12px 16px;
+  margin: 0 0 24px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.9rem;
+  color: #b8a9c9;
+}
+
+.ndaNote strong {
+  color: #9b59b6;
+}
+
 .keyComponents {
   margin-top: 32px;
   padding-top: 24px;

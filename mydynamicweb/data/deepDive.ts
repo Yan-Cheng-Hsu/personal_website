@@ -34,17 +34,19 @@ export interface DeepDiveSection {
 }
 
 // ============================================
-// Alibaba Cloud Section
+// Cloud Provider A Section
 // ============================================
 
 const alibabaSection: DeepDiveSection = {
   id: 'alibaba',
-  company: 'Alibaba Cloud',
+  company: 'Global Cloud Provider',
   tagline: 'Cross-Cluster AI Training Infrastructure',
   systemArchitecture: {
     title: 'K8s on K8s: Recursive Virtualization Architecture',
     subtitle: 'Two-Layer Virtual Kubelet for Multi-Cluster GPU Pooling',
-    overview: `When building large-scale AI SaaS platforms, we faced a critical business challenge: **customers were paying for expensive ECI (Elastic Container Instances) on-demand, while our reserved GPU clusters sat underutilized**.
+    overview: `> **Note**: Due to confidentiality agreements, specific implementation details have been abstracted. The patterns described represent general industry practices.
+
+When building large-scale AI SaaS platforms, we faced a critical business challenge: **customers were paying for expensive on-demand container instances, while our reserved GPU clusters sat underutilized**.
 
 The root cause? Kubernetes wasn't designed for cross-cluster resource pooling. Each cluster was an isolated island.
 
@@ -53,25 +55,49 @@ Our solution: A **two-layer Virtual Kubelet architecture** that presents multipl
 - Centralized billing and quota management
 - Seamless failover between clusters
 
-The architecture achieves **~40% cost reduction** by maximizing reserved instance utilization before falling back to on-demand resources.`,
+The architecture achieves **significant cost reduction** by maximizing reserved instance utilization before falling back to on-demand resources.`,
     keyComponents: [
-      'L1: ACK Frontend (User-facing Kubernetes)',
+      'L1: Managed K8s Frontend (User-facing Kubernetes)',
       'L2: CPU Cluster (Control Plane / The Brain)',
       'L3: GPU Clusters (Data Plane / The Muscle)',
-      'Internal CLB for cross-cluster networking',
+      'Internal Load Balancer for cross-cluster networking',
       'VK Layer 2 Injection Modules'
     ],
     diagram: {
       type: 'mermaid',
       content: `graph TD
-    subgraph L1["L1: ACK Frontend"]
+    subgraph L1["L1: User-Facing Layer"]
+        User[User Workloads]
+    end
+
+    subgraph L2["L2: Control Plane"]
+        CP[Orchestration Components]
+    end
+
+    subgraph L3["L3: Data Plane"]
+        GPU[GPU Resource Pools]
+    end
+
+    L1 --- L2
+    L2 --- L3
+
+    style L1 fill:#2563eb,stroke:#3b82f6,color:#fff
+    style L2 fill:#7c3aed,stroke:#8b5cf6,color:#fff
+    style L3 fill:#059669,stroke:#10b981,color:#fff
+    style User fill:#1e40af,stroke:#3b82f6,color:#fff
+    style CP fill:#5b21b6,stroke:#8b5cf6,color:#fff
+    style GPU fill:#047857,stroke:#10b981,color:#fff`
+    }
+    /* Original detailed diagram:
+    content: \`graph TD
+    subgraph L1["L1: Managed K8s Frontend"]
         User[User Workloads]
     end
 
     subgraph L2["L2: CPU Cluster (Brain)"]
         API[Master API Server]
         Ray[Ray Head Controller]
-        CLB[Internal CLB]
+        LB[Internal LB]
         VN[Virtual Node]
         Bill[Billing & Quota]
     end
@@ -84,18 +110,18 @@ The architecture achieves **~40% cost reduction** by maximizing reserved instanc
 
     User -->|VK Layer 1| API
     API --> Ray
-    Ray --> CLB
+    Ray --> LB
     VN -->|VK Layer 2| GPU1
     VN -->|VK Layer 2| GPU2
     VN -->|VK Layer 2| GPU3
-    GPU1 -.->|Traffic via CLB| CLB
-    GPU2 -.->|Traffic via CLB| CLB
-    GPU3 -.->|Traffic via CLB| CLB
+    GPU1 -.->|Traffic via LB| LB
+    GPU2 -.->|Traffic via LB| LB
+    GPU3 -.->|Traffic via LB| LB
 
-    style CLB fill:#ff6b35,stroke:#ff6b35,color:#fff
+    style LB fill:#ff6b35,stroke:#ff6b35,color:#fff
     style L2 fill:#1a1a2e,stroke:#9b59b6
-    style L3 fill:#1a2e1a,stroke:#10b981`
-    }
+    style L3 fill:#1a2e1a,stroke:#10b981\`
+    */
   },
   caseStudies: [
     {
@@ -126,71 +152,67 @@ The architecture achieves **~40% cost reduction** by maximizing reserved instanc
 }
 
 // ============================================
-// Amazon Section
+// Tech Company B Section
 // ============================================
 
 const amazonSection: DeepDiveSection = {
   id: 'amazon',
-  company: 'Amazon AGI',
+  company: 'Tier-1 Tech Company',
   tagline: 'LLM Training Platform for Foundation Models',
   systemArchitecture: {
     title: 'LLM Training Platform Architecture',
-    subtitle: 'Internal Tools for 7,000+ GPU Fleet Management',
-    overview: `We operate an **LLM Training Platform** managing **7,000+ GPUs** distributed across multiple AWS EKS clusters. As the Internal Tools Team, we handle Health Checks, Node Remediation, and operational automation—primarily serving Scientists and ML researchers.
+    subtitle: 'Internal Tools for Large-Scale GPU Fleet Management',
+    overview: `> **Note**: Due to confidentiality agreements, specific implementation details have been abstracted. The patterns described represent general industry practices.
+
+We operate an **LLM Training Platform** managing **thousands of GPUs** distributed across multiple managed Kubernetes clusters. As the Internal Tools Team, we handle Health Checks, Node Remediation, and operational automation—primarily serving Scientists and ML researchers.
 
 The platform provides:
-- **Airflow DAGs** for orchestrating Health Checks, Divergence Tests, and Node Remediation
-- **RESTful APIs** via Lambda + API Gateway for cluster info and job management
+- **Airflow DAGs** for orchestrating Health Checks, Fault Isolation, and Node Remediation
+- **RESTful APIs** via Serverless Functions for cluster info and job management
 - **CLI Tools** for scientists to submit jobs and query status
 - **Persistent Layer** tracking GPU serial numbers, node status, and job history
 
 Result: **Multi-million dollar annual savings** through automated fault detection and reduced GPU idle time.`,
     keyComponents: [
-      'AWS EKS Clusters (7,000+ GPUs)',
+      'Managed K8s Clusters (Thousands of GPUs)',
       'Airflow DAGs for Health Check & Remediation',
-      'Lambda + API Gateway (RESTful APIs)',
-      'RDS for Job/Node/Cluster metadata',
-      'Argo Workflow + Helm for CI/CD'
+      'Serverless Functions (RESTful APIs)',
+      'Relational Database for Job/Node/Cluster metadata',
+      'GitOps-based CI/CD'
     ],
     diagram: {
       type: 'mermaid',
       content: `graph TD
-    subgraph Client["Customer / Scientist"]
-        CLI[CLI Tool]
+    subgraph Client["User Interface"]
+        CLI[CLI / API Client]
     end
 
-    subgraph API["RESTful APIs"]
-        Gateway[API Gateway]
-        Lambda[AWS Lambda]
-        Gateway --> Lambda
+    subgraph Platform["Platform Services"]
+        API[API Layer]
+        Orch[Orchestration Layer]
     end
 
-    subgraph Orch["Orchestration"]
-        Airflow[Airflow DAGs<br/>Health Check / Remediation]
-    end
-
-    subgraph DB["Persistent Layer"]
-        Job[(Job Table)]
-        Node[(Node Status)]
-        Cluster[(Cluster Info)]
+    subgraph Data["Data Layer"]
+        DB[Persistent Storage]
     end
 
     subgraph Infra["Infrastructure"]
-        EKS[AWS EKS Clusters<br/>GPU Nodes]
-        FSX[FSX Storage]
-        S3[S3 Bucket]
+        K8s[GPU Clusters]
     end
 
-    CLI --> Gateway
-    Lambda --> DB
-    Lambda --> Airflow
-    Airflow --> EKS
-    EKS --- FSX
-    EKS --- S3
+    Client --- Platform
+    Platform --- Data
+    Platform --- Infra
 
-    style CLI fill:#ff9900,stroke:#ff9900,color:#fff
-    style Airflow fill:#ff9900,stroke:#ff9900,color:#fff
-    style EKS fill:#10b981,stroke:#10b981,color:#fff`
+    style Client fill:#f59e0b,stroke:#fbbf24,color:#000
+    style Platform fill:#7c3aed,stroke:#8b5cf6,color:#fff
+    style Data fill:#2563eb,stroke:#3b82f6,color:#fff
+    style Infra fill:#059669,stroke:#10b981,color:#fff
+    style CLI fill:#d97706,stroke:#fbbf24,color:#fff
+    style API fill:#5b21b6,stroke:#8b5cf6,color:#fff
+    style Orch fill:#5b21b6,stroke:#8b5cf6,color:#fff
+    style DB fill:#1e40af,stroke:#3b82f6,color:#fff
+    style K8s fill:#047857,stroke:#10b981,color:#fff`
     }
   },
   caseStudies: [
@@ -199,13 +221,13 @@ Result: **Multi-million dollar annual savings** through automated fault detectio
       title: 'Stateful GPU Health Check System',
       subtitle: 'Stopping Silicon Decay with Hardware Fingerprint Tracking',
       docPath: 'amazon/case-1.md',
-      tags: ['GPU', 'Airflow', 'DynamoDB', 'FinOps'],
+      tags: ['GPU', 'Airflow', 'NoSQL DB', 'FinOps'],
       readTime: '12 min'
     },
     {
       id: 'divergence-test',
-      title: 'Divergence Test DAG',
-      subtitle: 'Binary Search-Based AI Training Fault Isolation',
+      title: 'Training Fault Isolation System',
+      subtitle: 'Binary Search-Based GPU Fault Detection',
       docPath: 'amazon/case-2.md',
       tags: ['Airflow', 'Kubernetes', 'Binary Search', 'Fault Isolation'],
       readTime: '10 min'

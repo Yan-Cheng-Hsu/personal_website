@@ -858,6 +858,15 @@
   max-width: 700px;
 }
 
+.ndaDisclaimer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-top: 1px solid #333;
+}
+
 .galleryInfo {
   padding: 3rem;
   display: flex;
