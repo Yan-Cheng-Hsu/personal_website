@@ -119,7 +119,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
 
   // Read the markdown file
-  const docsPath = path.join(process.cwd(), '..', 'docs', caseStudy.docPath)
+  const docsPath = path.join(process.cwd(), 'docs', caseStudy.docPath)
   let content = ''
 
   try {
