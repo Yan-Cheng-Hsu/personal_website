@@ -17,7 +17,7 @@ const experiences = [
     ],
     url: 'https://www.amazon.com',
     color: '#ff6b35',
-    hasStrategyModal: true
+    hasStrategyModal: false
   },
   {
     name: 'Alibaba Cloud',

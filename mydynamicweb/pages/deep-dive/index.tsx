@@ -1,30 +1,32 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { deepDiveArticles } from '@/data/deepDive'
+import dynamic from 'next/dynamic'
+import { deepDiveSections, ContentBlock } from '@/data/deepDive'
 import styles from '@/styles/DeepDive.module.css'
 import homeStyles from '@/styles/Home.module.css'
 import ThemeToggle from '@/components/ThemeToggle'
 
+const Mermaid = dynamic(() => import('@/components/Mermaid'), { ssr: false })
+
+function renderDiagram(block: ContentBlock) {
+  if (block.type === 'mermaid') {
+    return (
+      <div className={styles.mermaidBlock}>
+        <Mermaid chart={block.content} />
+      </div>
+    )
+  }
+  return null
+}
+
 export default function DeepDiveIndex() {
-  // Alibaba articles
-  const alibabaFeatured = deepDiveArticles.find(a => a.id === 'k8s-on-k8s-architecture')
-  const alibabaSubModules = deepDiveArticles.filter(a =>
-    a.category === 'alibaba' && a.id !== 'k8s-on-k8s-architecture'
-  )
-
-  // Amazon articles
-  const amazonFeatured = deepDiveArticles.find(a => a.id === 'platform-leviathan-overview')
-  const amazonSubModules = deepDiveArticles.filter(a =>
-    a.category === 'amazon' && a.id !== 'platform-leviathan-overview'
-  )
-
   return (
     <>
       <Head>
         <title>Technical Deep Dives | Bill Hsu</title>
         <meta
           name="description"
-          content="In-depth technical articles on cross-cluster Kubernetes architecture, identity management, storage scheduling, and more."
+          content="In-depth technical articles on cross-cluster Kubernetes architecture, GPU infrastructure, identity management, and more."
         />
       </Head>
 
@@ -54,123 +56,86 @@ export default function DeepDiveIndex() {
           </p>
         </header>
 
-        {/* ==================== ALIBABA CLOUD SECTION ==================== */}
-        <section className={styles.companySection}>
-          <div className={styles.companySectionHeader}>
-            <span className={styles.companyLogo}>☁️</span>
-            <h2 className={styles.companySectionTitle}>Alibaba Cloud</h2>
-            <p className={styles.companySectionDesc}>Cross-Cluster AI Training Infrastructure</p>
-          </div>
-
-          {/* Alibaba Featured */}
-          {alibabaFeatured && (
-            <div className={styles.featuredSection}>
-              <Link href={`/deep-dive/${alibabaFeatured.id}`} className={styles.featuredCard}>
-                <div className={styles.featuredBadge}>
-                  <span>🏗️ System Architecture</span>
-                </div>
-                <h2 className={styles.featuredTitle}>{alibabaFeatured.title}</h2>
-                <p className={styles.featuredSubtitle}>{alibabaFeatured.subtitle}</p>
-                <p className={styles.featuredDesc}>{alibabaFeatured.description}</p>
-                <div className={styles.featuredMeta}>
-                  <span className={styles.readTime}>{alibabaFeatured.readTime} read</span>
-                  <span className={styles.featuredCta}>Read Architecture Overview →</span>
-                </div>
-              </Link>
+        {deepDiveSections.map((section) => (
+          <section key={section.id} id={section.id} className={styles.companySection}>
+            {/* Company Header */}
+            <div className={styles.companySectionHeader}>
+              <span className={styles.companyLogo}>
+                {section.id === 'alibaba' ? '☁️' : '📦'}
+              </span>
+              <h2 className={styles.companySectionTitle}>{section.company}</h2>
+              <p className={styles.companySectionDesc}>{section.tagline}</p>
             </div>
-          )}
 
-          {/* Alibaba Sub-modules */}
-          {alibabaSubModules.length > 0 && (
-            <div className={styles.subSection}>
-              <h3 className={styles.subSectionTitle}>
-                <span className={styles.sectionIcon}>🔧</span>
-                Implementation Details
-              </h3>
-              <div className={styles.grid}>
-                {alibabaSubModules.map((article) => (
-                  <Link
-                    key={article.id}
-                    href={`/deep-dive/${article.id}`}
-                    className={styles.card}
-                  >
-                    <div className={styles.cardHeader}>
-                      <span className={styles.readTime}>{article.readTime}</span>
-                    </div>
-                    <h3 className={styles.cardTitle}>{article.title}</h3>
-                    <p className={styles.cardSubtitle}>{article.subtitle}</p>
-                    <p className={styles.cardDesc}>{article.description}</p>
-                    <div className={styles.tags}>
-                      {article.tags.slice(0, 3).map((tag) => (
-                        <span key={tag} className={styles.tag}>{tag}</span>
-                      ))}
-                    </div>
-                    <span className={styles.readMore}>Read Deep Dive →</span>
-                  </Link>
-                ))}
+            {/* System Architecture - Inline Display */}
+            <div className={styles.systemOverview}>
+              <div className={styles.overviewHeader}>
+                <span className={styles.overviewBadge}>
+                  {section.id === 'alibaba' ? '🏗️ System Architecture' : '⚡ AIOps Platform'}
+                </span>
+                <h3 className={styles.overviewTitle}>{section.systemArchitecture.title}</h3>
+                <p className={styles.overviewSubtitle}>{section.systemArchitecture.subtitle}</p>
+              </div>
+
+              <div
+                className={styles.overviewText}
+                dangerouslySetInnerHTML={{
+                  __html: section.systemArchitecture.overview
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\n\n/g, '</p><p>')
+                    .replace(/^- (.*$)/gm, '<li>$1</li>')
+                    .replace(/((?:<li>.*<\/li>\n?)+)/gm, '<ul>$1</ul>')
+                }}
+              />
+
+              {/* Architecture Diagram */}
+              {renderDiagram(section.systemArchitecture.diagram)}
+
+              {/* Key Components */}
+              <div className={styles.keyComponents}>
+                <h4>Key Components</h4>
+                <div className={styles.componentTags}>
+                  {section.systemArchitecture.keyComponents.map((component, idx) => (
+                    <span key={idx} className={styles.componentTag}>
+                      {component}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-          )}
-        </section>
 
-        {/* ==================== AMAZON SECTION ==================== */}
-        <section className={styles.companySection}>
-          <div className={styles.companySectionHeader}>
-            <span className={styles.companyLogo}>📦</span>
-            <h2 className={styles.companySectionTitle}>Amazon AGI</h2>
-            <p className={styles.companySectionDesc}>Self-Healing GPU Infrastructure for Foundation Models</p>
-          </div>
-
-          {/* Amazon Featured */}
-          {amazonFeatured && (
-            <div className={styles.featuredSection}>
-              <Link href={`/deep-dive/${amazonFeatured.id}`} className={`${styles.featuredCard} ${styles.amazonFeatured}`}>
-                <div className={styles.featuredBadge}>
-                  <span>⚡ AIOps Platform</span>
+            {/* Case Studies */}
+            {section.caseStudies.length > 0 && (
+              <div className={styles.subSection}>
+                <h3 className={styles.subSectionTitle}>
+                  <span className={styles.sectionIcon}>🔧</span>
+                  Case Studies
+                </h3>
+                <div className={styles.grid}>
+                  {section.caseStudies.map((caseStudy) => (
+                    <Link
+                      key={caseStudy.id}
+                      href={`/deep-dive/${section.id}/${caseStudy.id}`}
+                      className={styles.card}
+                    >
+                      <div className={styles.cardHeader}>
+                        <span className={styles.readTime}>{caseStudy.readTime}</span>
+                      </div>
+                      <h3 className={styles.cardTitle}>{caseStudy.title}</h3>
+                      <p className={styles.cardSubtitle}>{caseStudy.subtitle}</p>
+                      <div className={styles.tags}>
+                        {caseStudy.tags.slice(0, 3).map((tag) => (
+                          <span key={tag} className={styles.tag}>{tag}</span>
+                        ))}
+                      </div>
+                      <span className={styles.readMore}>Read Case Study →</span>
+                    </Link>
+                  ))}
                 </div>
-                <h2 className={styles.featuredTitle}>{amazonFeatured.title}</h2>
-                <p className={styles.featuredSubtitle}>{amazonFeatured.subtitle}</p>
-                <p className={styles.featuredDesc}>{amazonFeatured.description}</p>
-                <div className={styles.featuredMeta}>
-                  <span className={styles.readTime}>{amazonFeatured.readTime} read</span>
-                  <span className={styles.featuredCta}>Read Platform Overview →</span>
-                </div>
-              </Link>
-            </div>
-          )}
-
-          {/* Amazon Sub-modules */}
-          {amazonSubModules.length > 0 && (
-            <div className={styles.subSection}>
-              <h3 className={styles.subSectionTitle}>
-                <span className={styles.sectionIcon}>🔧</span>
-                Implementation Details
-              </h3>
-              <div className={styles.grid}>
-                {amazonSubModules.map((article) => (
-                  <Link
-                    key={article.id}
-                    href={`/deep-dive/${article.id}`}
-                    className={styles.card}
-                  >
-                    <div className={styles.cardHeader}>
-                      <span className={styles.readTime}>{article.readTime}</span>
-                    </div>
-                    <h3 className={styles.cardTitle}>{article.title}</h3>
-                    <p className={styles.cardSubtitle}>{article.subtitle}</p>
-                    <p className={styles.cardDesc}>{article.description}</p>
-                    <div className={styles.tags}>
-                      {article.tags.slice(0, 3).map((tag) => (
-                        <span key={tag} className={styles.tag}>{tag}</span>
-                      ))}
-                    </div>
-                    <span className={styles.readMore}>Read Deep Dive →</span>
-                  </Link>
-                ))}
               </div>
-            </div>
-          )}
-        </section>
+            )}
+          </section>
+        ))}
       </main>
     </>
   )

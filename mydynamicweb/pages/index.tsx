@@ -49,6 +49,9 @@ export default function Index() {
           </Link>
 
           <div className={homeStyles.navLinks}>
+            <Link href="/deep-dive" className={homeStyles.techBlogBtn}>
+              📚 Tech Blogs
+            </Link>
             <Link href="#schedule" className={homeStyles.scheduleBtn}>
               📅 Schedule Call
             </Link>
