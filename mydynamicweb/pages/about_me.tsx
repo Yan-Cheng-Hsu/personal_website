@@ -31,7 +31,7 @@ export default function AboutMe() {
             />
             <div className={styles.resumeButton}>
               <Link
-                href="/cv_25Q4.pdf"
+                href="/cv_26Q2.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -53,11 +53,11 @@ export default function AboutMe() {
             </p>
 
             <p>
-              At Alibaba Cloud, I architect cross-cluster AI training infrastructure for
-              cutting-edge robotics (Unitree G1-D), designing systems that centralize
-              massive-scale heterogeneous GPU fleets with ~40% TCO reduction and 25x capacity scaling. My work on Federated
-              Identity Mesh and AIOps observability demonstrates my ability to solve
-              complex distributed systems challenges.
+              At Alibaba Cloud, I architect a cross-cluster AI training platform for a
+              humanoid-robotics customer, centralizing massive-scale heterogeneous GPU
+              fleets with ~40% TCO reduction and 25x capacity scaling — the foundation for
+              two 0→1 SaaS products (interactive dev workstations and a distributed
+              training &amp; simulation scheduler) and a trust-first multi-agent RCA kernel.
             </p>
 
             <p>

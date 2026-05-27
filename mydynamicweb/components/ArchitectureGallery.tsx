@@ -6,43 +6,61 @@ import styles from '@/styles/Landing.module.css'
 // SVG Diagrams for each view (Simplified)
 function OverviewDiagram() {
   return (
-    <svg viewBox="0 0 700 420" style={{ width: '100%', height: 'auto' }}>
+    <svg viewBox="0 0 700 440" style={{ width: '100%', height: 'auto' }}>
       <defs>
         <linearGradient id="gBlue" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#4a9eff" stopOpacity="0.2" />
           <stop offset="100%" stopColor="#4a9eff" stopOpacity="0.05" />
         </linearGradient>
-        <linearGradient id="gPurple" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#9b59b6" stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#9b59b6" stopOpacity="0.05" />
-        </linearGradient>
         <linearGradient id="gGreen" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#10b981" stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#10b981" stopOpacity="0.05" />
+          <stop offset="0%" stopColor="#10b981" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#10b981" stopOpacity="0.04" />
         </linearGradient>
+        <marker id="arrDown" markerWidth="9" markerHeight="7" refX="4.5" refY="6" orient="auto">
+          <polygon points="0 0, 9 0, 4.5 7" fill="#10b981" />
+        </marker>
       </defs>
 
-      <text x="350" y="25" textAnchor="middle" fill="#888" fontSize="12" fontWeight="500">RECURSIVE VIRTUALIZATION ARCHITECTURE</text>
+      <text x="350" y="20" textAnchor="middle" fill="#888" fontSize="11" fontWeight="500">HETEROGENEOUS COMPUTE PLATFORM — RECURSIVE K8s-ON-K8s FOUNDATION</text>
 
-      {/* L1: User-Facing Layer */}
-      <rect x="120" y="50" width="460" height="80" rx="12" fill="url(#gBlue)" stroke="#4a9eff" strokeWidth="2" />
-      <text x="350" y="85" textAnchor="middle" fill="#4a9eff" fontSize="14" fontWeight="700">User-Facing Layer</text>
-      <text x="350" y="110" textAnchor="middle" fill="#7aa2d4" fontSize="10">Managed K8s • User Workloads</text>
+      {/* Apps row label */}
+      <text x="350" y="48" textAnchor="middle" fill="#7aa2d4" fontSize="10" fontWeight="600">0 → 1 SaaS PRODUCTS · run on the platform</text>
 
-      {/* L2: Control Plane */}
-      <rect x="80" y="160" width="540" height="100" rx="12" fill="url(#gPurple)" stroke="#9b59b6" strokeWidth="2" />
-      <text x="350" y="195" textAnchor="middle" fill="#9b59b6" fontSize="14" fontWeight="700">Control Plane</text>
-      <text x="350" y="220" textAnchor="middle" fill="#b8a9c9" fontSize="10">Orchestration • Scheduling • Identity Management</text>
-      <text x="350" y="245" textAnchor="middle" fill="#666" fontSize="9">Virtual Kubelet • Cross-Cluster Networking</text>
+      {/* App A: Dev Workstations */}
+      <rect x="70" y="58" width="270" height="72" rx="12" fill="url(#gBlue)" stroke="#4a9eff" strokeWidth="2" />
+      <text x="205" y="90" textAnchor="middle" fill="#4a9eff" fontSize="13" fontWeight="700">AI Dev Workstations</text>
+      <text x="205" y="112" textAnchor="middle" fill="#7aa2d4" fontSize="9">interactive · dual-plane networking</text>
 
-      {/* L3: Data Plane */}
-      <rect x="120" y="290" width="460" height="80" rx="12" fill="url(#gGreen)" stroke="#10b981" strokeWidth="2" />
-      <text x="350" y="325" textAnchor="middle" fill="#10b981" fontSize="14" fontWeight="700">Data Plane</text>
-      <text x="350" y="350" textAnchor="middle" fill="#6ee7b7" fontSize="10">GPU Resource Pools • Training Jobs</text>
+      {/* App B: Scheduler */}
+      <rect x="360" y="58" width="270" height="72" rx="12" fill="url(#gBlue)" stroke="#4a9eff" strokeWidth="2" />
+      <text x="495" y="88" textAnchor="middle" fill="#4a9eff" fontSize="12" fontWeight="700">Distributed Training &amp; Sim Scheduler</text>
+      <text x="495" y="112" textAnchor="middle" fill="#7aa2d4" fontSize="9">mixed CPU/GPU job dispatch</text>
+
+      {/* Arrows down to foundation */}
+      <line x1="205" y1="130" x2="205" y2="176" stroke="#10b981" strokeWidth="2" markerEnd="url(#arrDown)" />
+      <line x1="495" y1="130" x2="495" y2="176" stroke="#10b981" strokeWidth="2" markerEnd="url(#arrDown)" />
+      <text x="350" y="160" textAnchor="middle" fill="#666" fontSize="9">runs on</text>
+
+      {/* Foundation box */}
+      <rect x="50" y="182" width="600" height="208" rx="12" fill="url(#gGreen)" stroke="#10b981" strokeWidth="2" />
+      <text x="350" y="208" textAnchor="middle" fill="#10b981" fontSize="13" fontWeight="700">HETEROGENEOUS COMPUTE PLATFORM — THE FOUNDATION</text>
+
+      {/* Foundation sub-elements */}
+      <rect x="75" y="222" width="550" height="44" rx="8" fill="#10241c" stroke="#10b981" strokeOpacity="0.5" />
+      <text x="350" y="242" textAnchor="middle" fill="#6ee7b7" fontSize="11" fontWeight="600">Recursive K8s-on-K8s</text>
+      <text x="350" y="258" textAnchor="middle" fill="#888" fontSize="9">virtual-node-on-virtual-node</text>
+
+      <rect x="75" y="274" width="550" height="44" rx="8" fill="#10241c" stroke="#10b981" strokeOpacity="0.5" />
+      <text x="350" y="294" textAnchor="middle" fill="#6ee7b7" fontSize="11" fontWeight="600">Cross-Cluster Identity Mesh</text>
+      <text x="350" y="310" textAnchor="middle" fill="#888" fontSize="9">app-layer routing · per-pod secrets-mount · no static credentials</text>
+
+      <rect x="75" y="326" width="550" height="48" rx="8" fill="#10241c" stroke="#10b981" strokeOpacity="0.5" />
+      <text x="350" y="347" textAnchor="middle" fill="#6ee7b7" fontSize="11" fontWeight="600">Unified Compute Substrate</text>
+      <text x="350" y="363" textAnchor="middle" fill="#888" fontSize="9">dedicated GPU pools + serverless CPU pools across multiple clusters</text>
 
       {/* Stats bar */}
-      <rect x="170" y="385" width="360" height="30" rx="8" fill="#1a1a1a" stroke="#333" />
-      <text x="350" y="405" textAnchor="middle" fill="#888" fontSize="9">Unified resource pool • Significant cost reduction • Zero-downtime operations</text>
+      <rect x="150" y="404" width="400" height="28" rx="8" fill="#1a1a1a" stroke="#333" />
+      <text x="350" y="422" textAnchor="middle" fill="#888" fontSize="9">Unified substrate · ~40% TCO reduction · 25x capacity scaling</text>
     </svg>
   )
 }
@@ -91,7 +109,7 @@ function AmazonDiagram() {
 
       {/* Stats bar */}
       <rect x="170" y="365" width="360" height="45" rx="8" fill="#1a1a1a" stroke="#333" />
-      <text x="350" y="393" textAnchor="middle" fill="#888" fontSize="10">Automated fault detection • Significant cost savings • Self-healing infrastructure</text>
+      <text x="350" y="393" textAnchor="middle" fill="#888" fontSize="10">Automated fault detection • Multi-million dollar savings • Rapid fault remediation</text>
     </svg>
   )
 }
@@ -219,14 +237,14 @@ const architectureViews = [
     id: 'scale',
     label: 'Scale (Cloud)',
     icon: '🌐',
-    title: 'Federated AI Infrastructure',
-    problem: 'Enterprise AI training demands massive GPU fleets, but Kubernetes wasn\'t designed for cross-cluster orchestration at this scale.',
-    description: 'Built a Ray AI SaaS platform on Managed Kubernetes with dual-layer Virtual Kubelet architecture. This powers training for enterprise AI customers, unifying isolated GPU clusters into one logical pool.',
+    title: 'Heterogeneous Compute Platform',
+    problem: 'Enterprise AI training demands massive GPU fleets, but Kubernetes wasn\'t designed for cross-cluster resource pooling — each cluster is an isolated island.',
+    description: 'Built a recursive K8s-on-K8s compute platform (virtual-node-on-virtual-node) unifying dedicated GPU and serverless CPU pools across clusters into one substrate — the foundation two 0→1 SaaS products run on, for a humanoid-robotics training & simulation customer.',
     diagram: OverviewDiagram,
     details: [
-      'Virtual Kubelet presents isolated clusters as a single logical pool',
-      'Federated Identity Mesh solves cross-cluster auth with automated token rotation',
-      'TimeWindow scheduling shifts workloads to off-peak hours → significant cost savings'
+      'Recursive K8s-on-K8s presents isolated clusters as one logical compute substrate',
+      'Cross-Cluster Identity Mesh: application-layer routing + per-pod secrets-mount, no static credentials',
+      'Two 0→1 SaaS products on top: AI dev workstations + distributed training & simulation scheduler'
     ],
     techStack: ['Virtual Kubelet', 'Golang', 'gRPC', 'Kubernetes'],
     deepDiveLink: '/deep-dive#alibaba'
@@ -279,9 +297,9 @@ export default function ArchitectureGallery() {
             Built for Massive-Scale GPU Infrastructure
           </h2>
           <p className={styles.archSubtitle}>
-            From Ray AI SaaS platforms to self-healing GPU fleets for LLM training.
+            From a recursive K8s-on-K8s compute platform to the 0→1 SaaS products and multi-agent systems built on top.
             <br />
-            Solving distributed system challenges at the petabyte scale.
+            Distributed-systems engineering across cloud, platform, and product.
           </p>
         </div>
 

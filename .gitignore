@@ -1,6 +1,9 @@
 # Documentation artifacts
 docs/
 
+# CV source (kept local; only public/cv_26Q2.pdf ships for HR download)
+cv-source/
+
 # Node modules in root
 node_modules/
 

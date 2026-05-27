@@ -29,13 +29,21 @@ export const experiences: Experience[] = [
     location: 'Sunnyvale, CA',
     projects: [
       {
-        title: 'Cross-Cluster AI Training Infrastructure for Unitree G1-D',
+        title: 'Project 1 — Cross-Cluster AI Training Platform (humanoid-robotics customer)',
         url: 'https://www.alibabacloud.com/',
         bullets: [
-          'Designed Dual-Layer Virtual Kubelet architecture orchestrating massive-scale heterogeneous GPU fleet; enabled Serverless-to-Reserved migration achieving ~40% TCO reduction and 25x capacity scaling for Unitree G1 humanoid robots.',
-          'Engineered Federated Identity Mesh enabling cross-cluster AuthN/AuthZ via external Secret injection; resolved split-brain identity challenges with Custom Controllers implementing automated token rotation.',
-          'Automated VPC provisioning via Terraform (Security Groups, CLB ACLs) to bypass CoreDNS isolation; rearchitected Ray service discovery for low-latency cross-boundary communication.',
-          'Built Kubernetes Controller with telemetry pipeline (DCGM metrics, kernel traces); implemented reconciliation loop triggering automated cordon/drain for faulty GPU nodes.'
+          'Architected Heterogeneous Compute Platform: abstracted heterogeneous compute (dedicated GPU + serverless CPU pools) across multiple Kubernetes clusters into a single resource substrate via recursive K8s-on-K8s virtualization (virtual-node-on-virtual-node); enabled Serverless-to-Reserved migration delivering 25x capacity scaling per availability zone at ~40% TCO reduction — the foundational compute layer all downstream SaaS depends on.',
+          'Engineered Cross-Cluster Identity Mesh: federated multiple Kubernetes clusters via application-layer routing + per-pod secrets-mount credential delivery; remote pods authenticate to customer VPC and private container registry transparently without static credentials.',
+          'Built AI Dev Workstations as a 0→1 SaaS product: pioneered dual-plane networking enabling simultaneous customer-VPC private egress AND public-internet developer ingress on the same pod — a capability the underlying cloud network model did not natively support; provisions in sub-60s p95 vs days of DIY VPC-peering + bastion setup.',
+          'Built Distributed Training & Simulation Scheduler as a 0→1 SaaS product: abstracted mixed CPU/GPU training pipelines into a clean job schema; per-component dispatch routes GPU-heavy workers to dedicated hardware and CPU-heavy workers to serverless infrastructure, shielding users from compute heterogeneity while delivering ~30-40% cost reduction on mixed workloads.'
+        ]
+      },
+      {
+        title: 'Project 2 — RCAgent: Trust-First Multi-Agent RCA System (sole author)',
+        url: 'https://bill-yc-hsu.com/deep-dive/alibaba/rcagent',
+        bullets: [
+          'Architected Supervisor-Worker Multi-Agent System with 4-Gate Hallucination Defense: separated planning from execution via a supervisor dispatching to specialist sub-agents; new-skill additions gated by pass^3 ≥ 80% (Anthropic τ-bench consistency metric) on the regression suite — surfaces non-deterministic LLM failures missed by single-run tests.',
+          'Designed Meta-Tool with Hierarchical Skill Tree: agents perform multi-round retrieval over a 3-layer skill tree, narrowing the candidate set at each descent; yields avg 6 tools loaded per invocation out of 200+ available (~3% surface), invariant to catalog growth.'
         ]
       }
     ],
@@ -166,6 +174,9 @@ export interface Publication {
   image: string
   bullets: string[]
   isOral?: boolean
+  citations?: number
+  doi?: string
+  arxivUrl?: string
 }
 
 export const publications: Publication[] = [
@@ -176,11 +187,14 @@ export const publications: Publication[] = [
     venue: 'Sensors 20, no. 19: 5668',
     year: 2020,
     url: 'https://www.mdpi.com/1424-8220/20/19/5668',
+    doi: '10.3390/s20195668',
     githubUrl: 'https://github.com/Yan-Cheng-Hsu/Blood-Pressure-Estimation-Model',
     image: '/pics/publication_system_overview.png',
+    citations: 140,
     bullets: [
       'Developed a deep-neural-network model for estimating blood pressure with a novel statistical feature selection method.',
-      'Achieved cutting-edge performance satisfying both AAMI and BHS standards for blood pressure measurement devices.'
+      'Achieved cutting-edge performance satisfying both AAMI and BHS standards for blood pressure measurement devices.',
+      'Cited by Mitsubishi Electric patent US20230063221A1 for cuffless BP estimation methodology.'
     ]
   },
   {
@@ -190,7 +204,9 @@ export const publications: Publication[] = [
     venue: 'APSIPA ASC 2023',
     year: 2023,
     url: 'https://ieeexplore.ieee.org/document/10317578',
+    doi: '10.1109/APSIPAASC58517.2023.10317578',
     image: '/pics/tst_so.png',
+    citations: 4,
     bullets: [
       'Implemented self-supervised time series transformers, securing state-of-the-art performance on diverse temporal datasets.',
       'Presented findings orally at the IEEE APSIPA ASC 2023 conference.'
@@ -203,8 +219,9 @@ export const publications: Publication[] = [
     authors: 'Amazon AGI et al. (including Hsu, Yan-Cheng)',
     venue: 'Amazon Technical Report',
     year: 2024,
-    url: 'https://www.amazon.com/b?node=21576558011',
+    url: 'https://www.amazon.science/publications/the-amazon-nova-family-of-models-technical-report-and-model-card',
     image: '/pics/amazon_icon.png',
+    citations: 15,
     bullets: [
       'Contributed to the GPU infrastructure and HPC systems that enabled training of the Amazon Nova family of foundation models.',
       'Part of the High Performance Computing team that built Platform Leviathan for NVIDIA A100/H100 GPU management.'

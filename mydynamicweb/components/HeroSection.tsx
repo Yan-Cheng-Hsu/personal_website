@@ -5,11 +5,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 const roles = [
-  "Architected Cross-Cluster Infrastructure for Massive-Scale GPU Fleets 🚀",
-  "Delivered Multi-Million Dollar Savings at Amazon AGI 💰",
-  "Drastically Reduced MTTR with Self-Healing AIOps ⚡",
-  "Designed Federated Identity Mesh for K8s 🔐",
-  "Order-of-Magnitude Scaling for AI Training 🤖"
+  "Built a Heterogeneous Compute Platform for Multi-Cluster AI Training 🚀",
+  "Shipped Two 0→1 SaaS Products on a Recursive K8s Platform 🛠️",
+  "Authored a Trust-First Multi-Agent RCA Kernel 🤖",
+  "Delivered Multi-Million Dollar GPU-Fleet Savings at Amazon AGI 💰",
+  "25x Capacity Scaling at ~40% TCO Reduction 📈",
+  "Cited 159+ times on Google Scholar — incl. industrial patent citation 📚"
 ]
 
 export default function HeroSection() {
@@ -37,7 +38,7 @@ export default function HeroSection() {
       >
         <div className={styles.availability}>
           <span className={styles.statusDot}></span>
-          Available for Senior/Staff SDE | SRE | MLE Roles | GPU/AI Infrastructure Specialist
+          Available for Senior/Staff SDE | MLE Roles | GPU/AI Infrastructure Specialist
         </div>
 
         <div className={styles.heroProfile}>
@@ -92,7 +93,7 @@ export default function HeroSection() {
           <Link href="#schedule" className={styles.primaryBtn}>
             📅 Schedule a Call
           </Link>
-          <Link href="/cv_25Q4.pdf" className={styles.secondaryBtn} target="_blank">
+          <Link href="/cv_26Q2.pdf" className={styles.secondaryBtn} target="_blank">
             📄 Download Resume
           </Link>
         </div>

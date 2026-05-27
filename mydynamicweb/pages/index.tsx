@@ -12,6 +12,7 @@ import ScheduleSection from '@/components/ScheduleSection'
 import Analytics from '@/components/Analytics'
 import ThemeToggle from '@/components/ThemeToggle'
 import Image from 'next/image'
+import { scholarProfile } from '@/data/scholar'
 
 export default function Index() {
   return (
@@ -34,7 +35,13 @@ export default function Index() {
           content="Building Cross-Cluster infrastructure that powers next-gen AI. Architected systems for massive-scale GPU fleets with multi-million dollar impact."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://profile.bill-hsu.com" />
+        <meta property="og:url" content="https://bill-yc-hsu.com" />
+        <meta property="og:image" content="https://bill-yc-hsu.com/pics/resume_photo.jpg" />
+        <meta property="og:image:width" content="600" />
+        <meta property="og:image:height" content="600" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://bill-yc-hsu.com/pics/resume_photo.jpg" />
+        <link rel="canonical" href="https://bill-yc-hsu.com" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -81,6 +88,11 @@ export default function Index() {
             <Link href="https://github.com/Yan-Cheng-Hsu" target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Image src="/brands/github.png" alt="GitHub" width={20} height={20} />
               GitHub
+            </Link>
+            <span style={{ opacity: 0.5 }}>•</span>
+            <Link href={scholarProfile.scholarUrl} target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Image src="/pics/googlescholar_icon.png" alt="Google Scholar" width={20} height={20} />
+              Scholar ({scholarProfile.totalCitations}+ citations)
             </Link>
             <span style={{ opacity: 0.5 }}>•</span>
             <Link href="mailto:bill.ych.jobs@gmail.com" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

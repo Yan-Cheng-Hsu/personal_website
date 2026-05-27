@@ -29,6 +29,8 @@ export function trackVisitor() {
   }
 }
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID
+
 export default function Analytics() {
   const router = useRouter()
 
@@ -36,10 +38,11 @@ export default function Analytics() {
     // Track initial page load
     trackVisitor()
 
-    // Track route changes
+    // Track route changes (only when GA is configured)
     const handleRouteChange = (url: string) => {
+      if (!GA_ID) return
       if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('config', 'G-YOUR-ID', {
+        (window as any).gtag('config', GA_ID, {
           page_path: url,
         })
       }
@@ -51,11 +54,14 @@ export default function Analytics() {
     }
   }, [router.events])
 
+  // Skip GA scripts entirely in dev / when not configured
+  if (!GA_ID) return null
+
   return (
     <>
       {/* Google Analytics */}
       <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-YOUR-MEASUREMENT-ID"
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
         strategy="afterInteractive"
       />
       <Script id="google-analytics" strategy="afterInteractive">
@@ -63,7 +69,7 @@ export default function Analytics() {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', 'G-YOUR-MEASUREMENT-ID', {
+          gtag('config', '${GA_ID}', {
             page_path: window.location.pathname,
             custom_map: {
               'dimension1': 'visitor_company',

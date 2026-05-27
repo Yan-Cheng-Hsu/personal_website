@@ -11,7 +11,7 @@ const offerings = [
       'Unified Resource Orchestration across clusters',
       'Federated Identity Mesh with secure AuthN/AuthZ',
       'Hybrid Network Fabric for low-latency communication',
-      '25x capacity scaling for Unitree G1 robot training'
+      '25x capacity scaling for humanoid-robotics training'
     ]
   },
   {
@@ -26,14 +26,14 @@ const offerings = [
     ]
   },
   {
-    icon: '⚡',
-    title: 'AIOps & Self-Healing Systems',
-    description: 'Architecting autonomous infrastructure that fixes itself',
+    icon: '🤖',
+    title: 'Multi-Agent Systems & LLM Agent Architecture',
+    description: 'Authored RCAgent — a trust-first multi-agent kernel for distributed-systems incident triage',
     details: [
-      '~90% troubleshooting time reduction per incident',
-      'Custom Kubernetes Controllers for auto-remediation',
-      'Closed-loop telemetry pipeline with SysOM',
-      'Zero data loss in isolated GPU sandboxes'
+      'Supervisor-Worker architecture with a 4-Gate Hallucination Defense',
+      'New-skill gating via pass^3 ≥ 80% (Anthropic τ-bench consistency metric)',
+      'Meta-Tool over a hierarchical skill tree — avg 6 of 200+ tools per call',
+      '~40% auto-healing on confirmed-cause incidents'
     ]
   },
   {

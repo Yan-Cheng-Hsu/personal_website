@@ -13,6 +13,7 @@ export default function Mermaid({ chart, className = '' }: MermaidProps) {
   useEffect(() => {
     mermaid.initialize({
       startOnLoad: false,
+      suppressErrorRendering: true,
       theme: 'dark',
       themeVariables: {
         primaryColor: '#ff6b35',

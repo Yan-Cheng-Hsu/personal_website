@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
 import CountUp from 'react-countup'
 import CostOptimizationModal from './CostOptimizationModal'
+import { scholarProfile } from '@/data/scholar'
 import styles from '@/styles/Landing.module.css'
 
 const experiences = [
@@ -11,9 +12,9 @@ const experiences = [
     name: 'Amazon AGI',
     logo: '/brands/amazon-official.png',
     descriptions: [
-      'Multi-million dollar infrastructure savings',
-      'Architected Cross-Cluster systems for massive-scale GPU fleets',
-      'Built self-healing AIOps drastically reducing MTTR'
+      'Multi-million dollar annualized GPU-fleet savings',
+      'GPU lifecycle management at massive scale (Airflow DAG)',
+      'Automated fault remediation cutting troubleshooting ~90%'
     ],
     url: 'https://www.amazon.com',
     color: '#ff6b35',
@@ -23,9 +24,9 @@ const experiences = [
     name: 'Alibaba Cloud',
     logo: '/brands/alibaba-official.png',
     descriptions: [
-      'Current - Infrastructure Software Engineer II',
-      'AI Training Platform resource management',
-      'Significant cost reduction through optimization'
+      'Current — Infrastructure Software Engineer II',
+      'Heterogeneous compute platform for multi-cluster AI training',
+      'Two 0→1 SaaS products + a multi-agent RCA kernel'
     ],
     url: 'https://www.alibabacloud.com',
     color: '#f7c531'
@@ -66,9 +67,17 @@ const experiences = [
 ]
 
 const highlightMetrics = [
-  { label: 'Massive-Scale GPU Fleet', icon: '🖥️', color: '#ff6b35' },
-  { label: 'Drastic MTTR Reduction', icon: '⚡', color: '#f7c531' },
-  { value: 3, suffix: '+', label: 'Publications', icon: '📄', color: '#9b59b6' },
+  {
+    value: scholarProfile.totalCitations,
+    suffix: '+',
+    label: 'Citations (Google Scholar)',
+    icon: '📚',
+    color: '#10b981',
+    href: scholarProfile.scholarUrl,
+  },
+  { value: 25, suffix: 'x', label: 'Capacity Scaling (Alibaba)', icon: '🚀', color: '#ff6b35' },
+  { value: 90, suffix: '%', prefix: '~', label: 'MTTR Reduction (Amazon)', icon: '⚡', color: '#f7c531' },
+  { value: 4, suffix: '+', label: 'Publications & Patents', icon: '📄', color: '#9b59b6' },
 ]
 
 export default function ImpactSection() {
@@ -89,30 +98,50 @@ export default function ImpactSection() {
 
         {/* Highlight Metrics Row */}
         <div className={styles.highlightMetrics}>
-          {highlightMetrics.map((metric, index) => (
-            <motion.div
-              key={index}
-              className={styles.highlightMetric}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: index * 0.1 }}
-            >
-              <span className={styles.highlightIcon}>{metric.icon}</span>
-              {metric.value !== undefined ? (
-                <span className={styles.highlightValue} style={{ color: metric.color }}>
-                  {inView && (
-                    <CountUp
-                      start={0}
-                      end={metric.value}
-                      duration={2}
-                      suffix={metric.suffix}
-                    />
-                  )}
-                </span>
-              ) : null}
-              <span className={styles.highlightLabel}>{metric.label}</span>
-            </motion.div>
-          ))}
+          {highlightMetrics.map((metric, index) => {
+            const cardInner = (
+              <>
+                <span className={styles.highlightIcon}>{metric.icon}</span>
+                {metric.value !== undefined ? (
+                  <span className={styles.highlightValue} style={{ color: metric.color }}>
+                    {inView && (
+                      <CountUp
+                        start={0}
+                        end={metric.value}
+                        duration={2}
+                        prefix={metric.prefix}
+                        suffix={metric.suffix}
+                      />
+                    )}
+                  </span>
+                ) : null}
+                <span className={styles.highlightLabel}>{metric.label}</span>
+              </>
+            )
+            const cardProps = {
+              className: styles.highlightMetric,
+              initial: { opacity: 0, y: 20 },
+              animate: inView ? { opacity: 1, y: 0 } : {},
+              transition: { delay: index * 0.1 },
+            }
+            return metric.href ? (
+              <motion.a
+                key={index}
+                href={metric.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}
+                whileHover={{ scale: 1.05 }}
+                {...cardProps}
+              >
+                {cardInner}
+              </motion.a>
+            ) : (
+              <motion.div key={index} {...cardProps}>
+                {cardInner}
+              </motion.div>
+            )
+          })}
         </div>
 
         {/* Experience Cards */}

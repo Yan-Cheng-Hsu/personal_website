@@ -10,4 +10,14 @@ module.exports = {
   images: {
     unoptimized: false,
   },
+  async headers() {
+    return [
+      {
+        source: '/cv_:slug*.pdf',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+        ],
+      },
+    ];
+  },
 };

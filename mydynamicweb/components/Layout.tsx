@@ -13,7 +13,7 @@ export default function Layout({ children, title, description }: LayoutProps) {
   return (
     <>
       <Head>
-        <title>{title} | Bill Hsu</title>
+        <title>{`${title} | Bill Hsu`}</title>
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="Yan-Cheng (Bill) Hsu" />
@@ -21,6 +21,10 @@ export default function Layout({ children, title, description }: LayoutProps) {
         <meta property="og:title" content={`${title} | Bill Hsu`} />
         <meta property="og:description" content={description} />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://bill-yc-hsu.com" />
+        <meta property="og:image" content="https://bill-yc-hsu.com/pics/resume_photo.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://bill-yc-hsu.com/pics/resume_photo.jpg" />
         <link rel="icon" href="/logo.ico" />
       </Head>
 
@@ -41,6 +45,7 @@ export default function Layout({ children, title, description }: LayoutProps) {
             <Link href="/about_me">About</Link>
             <Link href="/work_exp">Experience</Link>
             <Link href="/projects">Projects</Link>
+            <Link href="/publications">Publications</Link>
             <Link href="/contacts">Contact</Link>
           </div>
         </div>
